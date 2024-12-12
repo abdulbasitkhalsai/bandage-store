@@ -5,8 +5,8 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <header className='font-[sans-serif] min-h-[60px] tracking-wide relative z-50'>
-    <section className="bg-[#252B42] min-h-[40px] px-4 py-2 sm:px-10 flex items-center flex-wrap">
+    <header className='font-[sans-serif] min-h-[40px] tracking-wide relative z-50'>
+    <section className="bg-[#252B42] min-h-[40px] px-4 py-2 sm:px-10 lg:flex w-full items-center flex-wrap hidden">
       <button type="button" className="text-[#FFFFFF] text-sm">        
         <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="#fff" className="mr-3 inline-block"
           viewBox="0 0 482.6 482.6">
@@ -16,7 +16,7 @@ const Header = () => {
         </svg>
         (255) 555-0118
       </button>
-      <span className="border-l h-3 mx-6 max-sm:hidden"></span>
+      <span className="border-l h-3 mx-6"></span>
       <button type="button" className="text-[#FFFFFF] text-sm max-sm:my-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="#fff" className="mr-3 inline-block"
           viewBox="0 0 479.058 479.058">
@@ -26,22 +26,21 @@ const Header = () => {
         </svg>
         michelle.rivera@example.com
       </button>
-      <div className="text-[#FFFFFF] text-sm md:flex-1 flex justify-center max-sm:justify-center max-sm:w-full max-sm:mt-2">
+      <div className="text-[#FFFFFF] text-sm md:flex-1 flex justify-center max-sm:justify-center max-sm:w-full max-sm:mt-2 ">
     Follow Us and get a chance to win 80% off
   </div>
       <div className="sm:ml-auto flex items-center">
       <span className="mr-2 font-medium text-[#FFFFFF]">Follow us:</span>
      <ul className="flex">
      {socialLinks.map((item, index) => (
-      <li key={index} className="ml-2">
+      <li key={index} className="ml-2 w-[26] h-auto">
         <Link href={item.hrefIcon} target="_blank" rel="noopener noreferrer">
           <Image
             src={item.srcIcon}
             alt={item.altIcon}
             width={26}
             height={26}
-            layout='fixed'
-          />
+             />
         </Link>
       </li>
     ))}
@@ -50,7 +49,7 @@ const Header = () => {
 
     </section>
   
-    <div className='flex flex-wrap items-center py-3 px-4 sm:px-10 bg-[#FFFFFF] lg:gap-y-4 gap-y-6 gap-x-4'>
+    <div className='flex flex-wrap items-center py-3 px-4 sm:px-10 bg-[#F88FFF] lg:gap-y-4 gap-y-6 gap-x-4'>
       <div><Link href={"/"} className='text-[#252B42]'>Bandage</Link></div>
       <div className='flex flex-1 w-full lg:w-auto justify-end lg:justify-between items-center ml-4'>      
       <div id="collapseMenu"
@@ -60,7 +59,7 @@ const Header = () => {
         </ul>
       </div>
       <div className='flex items-center max-sm:ml-auto'>
-        <div className='flex items-center gap-[5px] p-[15px]'>
+        <div className='lg:flex items-center gap-[5px] p-[15px] hidden'>
           <Image className='w-3 h-3' src={"/images/Icn-User.png"} alt='User' width={12} height={12}></Image>
           <span>Login / Register</span>
         </div>
@@ -72,7 +71,7 @@ const Header = () => {
           <li
             className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
             <span className="relative">
-              <Image className='cursor-pointer inline-block ' src={"/images/Icn-Cart.png"} width={16} height={16} layout='fixed' alt='Cart'></Image>
+              <Image className='cursor-pointer inline-block h-4 w-auto' src={"/images/Icn-Cart.png"} width={16} height={16} layout='fixed' alt='Cart'></Image>
               <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
             </span>
           </li>

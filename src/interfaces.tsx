@@ -4,12 +4,12 @@ export interface ILink {
 }
 
 export  interface IProdCard {
-    icon: "/images/Favorites.png";
-    altIcon: "Favorites";
     image: string;
     altImage: string;
+    title: string;
     description: string;
     price: number;
-    button: "Buy Now";
+    discPrice: number;
 }
+
 

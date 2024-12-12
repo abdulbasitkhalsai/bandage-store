@@ -1,4 +1,4 @@
-import { ILink,} from "./interfaces";
+import { ILink, IProdCard,} from "./interfaces";
 
 export const navItems :ILink[] = [
     {
@@ -48,6 +48,81 @@ export const socialLinks  = [
       altIcon: "Instagram",
       srcIcon: "/images/H-Insta.png",
       hrefIcon: "https://www.instagram.com/"
-    }
+    },
   ];
+
+  export const FeaturedProd : IProdCard[] = [
+    {
+      image: "/images/ProdCard-1.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-2.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-3.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-4.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-5.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-6.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-7.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+    {
+      image: "/images/ProdCard-8.png",
+      altImage: "Dress",
+      title: "Grapic Design",
+      description: "English Department",
+      price: 16.48,
+      discPrice: 6.48
+  
+    },
+]
 
