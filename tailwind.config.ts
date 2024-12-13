@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'sm-custom': '420px',
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

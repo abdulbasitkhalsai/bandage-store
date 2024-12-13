@@ -49,7 +49,7 @@ const Header = () => {
 
     </section>
   
-    <div className='flex flex-wrap items-center py-3 px-4 sm:px-10 bg-[#F88FFF] lg:gap-y-4 gap-y-6 gap-x-4'>
+    <div className='flex flex-wrap items-center py-3 px-4 sm:px-10 bg-[#FFFFFF] lg:gap-y-4 gap-y-6 gap-x-4'>
       <div><Link href={"/"} className='text-[#252B42]'>Bandage</Link></div>
       <div className='flex flex-1 w-full lg:w-auto justify-end lg:justify-between items-center ml-4'>      
       <div id="collapseMenu"
