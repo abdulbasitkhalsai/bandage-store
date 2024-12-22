@@ -4,6 +4,9 @@ import Hero1 from "@/components/hero1";
 import Hero2 from "@/components/hero2";
 import ProdCard from "@/components/prodcard";
 import Banner2 from "@/components/banner2";
+import Blog from "@/components/blog";
+import Footer from "@/components/footer";
+
 
 export default function Home() {
   return (
@@ -14,6 +17,8 @@ export default function Home() {
     <ProdCard />
     <Banner1 />
     <Banner2 />
+    <Blog />
+    <Footer />
 
 
   </div>

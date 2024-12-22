@@ -53,6 +53,7 @@ export const socialLinks  = [
 
   export const FeaturedProd : IProdCard[] = [
     {
+      id: 1,
       image: "/images/ProdCard-1.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -62,6 +63,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 2,
       image: "/images/ProdCard-2.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -71,6 +73,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 3,
       image: "/images/ProdCard-3.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -80,6 +83,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 4,
       image: "/images/ProdCard-4.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -89,6 +93,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 5,
       image: "/images/ProdCard-5.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -98,6 +103,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 6,
       image: "/images/ProdCard-6.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -107,6 +113,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 7,
       image: "/images/ProdCard-7.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -116,6 +123,7 @@ export const socialLinks  = [
   
     },
     {
+      id: 8,
       image: "/images/ProdCard-8.png",
       altImage: "Dress",
       title: "Grapic Design",
@@ -126,3 +134,32 @@ export const socialLinks  = [
     },
 ]
 
+export const blog : IProdCard[] = [
+{
+  id: "Blog-1",
+  image: "/images/Blog1.png",
+  altImage: "Blog",
+  title: "Loudest à la Madison #1 (L'integral)",
+  description: "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
+  postingdate: "22 April 2021",
+  commentCount: 10,
+},
+{
+  id: "Blog-2",
+  image: "/images/Blog2.png",
+  altImage: "Blog",
+  title: "Loudest à la Madison #1 (L'integral)",
+  description: "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
+  postingdate: "22 April 2021",
+  commentCount: 10,
+},
+{
+  id: "Blog-3",
+  image: "/images/Blog3.png",
+  altImage: "Blog",
+  title: "Loudest à la Madison #1 (L'integral)",
+  description: "We focus on ergonomics and meeting you where you work. It's only a keystroke away.",
+  postingdate: "22 April 2021",
+  commentCount: 10,
+}
+]
