@@ -15,4 +15,15 @@ export  interface IProdCard {
     commentCount?: number;
 }
 
+export interface IProdCategroy {
+    id: string;
+    image: string;
+    altImage: string;
+    itemCount: number;
+}
 
+export interface IlogosProp {
+    id: number,
+    image: string,
+    altImage: string,
+}

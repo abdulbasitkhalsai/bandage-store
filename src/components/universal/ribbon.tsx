@@ -1,12 +1,11 @@
-import { navItems, socialLinks } from '@/constant'
+import { socialLinks } from '@/constant'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const Header = () => {
+const Ribbon = () => {
   return (
-    <header className='font-[sans-serif] min-h-[40px] tracking-wide relative z-50'>
-    <section className="bg-[#252B42] min-h-[40px] px-4 py-2 sm:px-10 lg:flex w-full items-center flex-wrap hidden">
+    <section className="bg-[#252B42] min-h-[40px] px-4 py-2 sm:px-10 lg:flex items-center flex-wrap hidden">
       <button type="button" className="text-[#FFFFFF] text-sm">        
         <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="#fff" className="mr-3 inline-block"
           viewBox="0 0 482.6 482.6">
@@ -34,7 +33,7 @@ const Header = () => {
      <ul className="flex">
      {socialLinks.map((item, index) => (
       <li key={index} className="ml-2 w-[26] h-auto">
-        <Link href={item.hrefIcon} target="_blank" rel="noopener noreferrer">
+        <Link href={item.hrefIcon} target="_blank">
           <Image
             src={item.srcIcon}
             alt={item.altIcon}
@@ -48,51 +47,6 @@ const Header = () => {
 </div>
 
     </section>
-  
-    <div className='flex flex-wrap items-center py-3 px-4 sm:px-10 bg-[#FFFFFF] lg:gap-y-4 gap-y-6 gap-x-4'>
-      <div><Link href={"/"} className='text-[#252B42]'>Bandage</Link></div>
-      <div className='flex flex-1 w-full lg:w-auto justify-end lg:justify-between items-center ml-4'>      
-      <div id="collapseMenu"
-        className="max-lg:hidden lg:!flex lg:items-center max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50 justify-end">
-        <ul className='hidden lg:flex space-x-6 ml-10'>
-          {navItems.map((item, index) => (<li key={index} className='max-lg:border-b text-[#737373] max-lg:py-3 relative lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300'><Link href={item.link}>{item.title}</Link></li>))} 
-        </ul>
-      </div>
-      <div className='flex items-center max-sm:ml-auto'>
-        <div className='lg:flex items-center gap-[5px] p-[15px] hidden'>
-          <Image className='w-3 h-3' src={"/images/Icn-User.png"} alt='User' width={12} height={12}></Image>
-          <span>Login / Register</span>
-        </div>
-        <ul className="flex space-x-4 items-center">
-          <li
-            className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-            <Image src={"/images/Icn-Search.png"} width={16} height={16} alt='Search'></Image>
-          </li>
-          <li
-            className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-            <span className="relative">
-              <Image className='cursor-pointer inline-block h-4 w-auto' src={"/images/Icn-Cart.png"} width={16} height={16} layout='fixed' alt='Cart'></Image>
-              <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-            </span>
-          </li>
-          <li
-            className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-            <span className="relative">
-              <Image className='cursor-pointer inline-block ' src={"/images/Icn-Fav.png"} width={16} height={16} alt='Favorites'></Image>
-              <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-            </span>
-          </li>
-        </ul>
-  
-        <button id="toggleOpen" className='lg:hidden ml-6'>
-          <Image src="/images/Icn-Menu.png" alt="Menu" width={24} height={13.71} className="object-contain"/>
-        </button>
-      </div>
-    </div>
-    </div>
-          
-  </header>
   )
 }
-
-export default Header
+export default Ribbon

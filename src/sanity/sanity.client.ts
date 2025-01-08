@@ -1,0 +1,1 @@
+import { createClient, type ClientConfig } from 'next-sanity'

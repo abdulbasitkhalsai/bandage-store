@@ -15,10 +15,9 @@ export function ButtonIcon() {
       </Button>
     )
   }
-  
 const Blog = () => {
   return (
-    <div className='flex flex-col py-20 gap-20 w-screen h-auto bg-[#FFFFFF] justify-center items-center'>
+    <div className='flex flex-col py-20 gap-20 w-full h-auto bg-[#FFFFFF] justify-center items-center'>
         <div className='flex flex-col gap-[10px] text-center text-wrap'>
             <h6 className='font-bold text-sm leading-6 tracking-[0.2px] text-[#23A6F0]'>Practice Advice</h6>
             <h3 className='font-bold text-[40px] leading-[50px] tracking-[0.2px] text-[#252B42]'>Featured Products</h3>
