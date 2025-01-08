@@ -8,7 +8,7 @@ const Hero1 = () => {
         <div className=' gap-[30px] lg:mt-12 lg:ml-[197.5px]'>
           <div className='flex flex-col h-fit lg:items-start items-center justify-between text-wrap gap-[35px]'>
             <span className='uppercase font-bold text-base tracking-[0.1px] h-auto'>Summer 2020</span>
-            <span className='uppercase h-auto text-wrap text-center font-bold text-[40px] lg:text-[58px] tracking-[0.2px] leading-[50px] lg:leading-[80px]'>New Collection</span>
+            <span className='uppercase h-auto text-wrap text-center font-bold text-[25px] sm:text-[40px] lg:text-[58px] tracking-[0.2px] leading-[50px] lg:leading-[80px]'>New Collection</span>
             <span className='text-wrap h-auto font-mono max-w-[376px] font-normal text-center lg:text-left tracking-[0.2px] leading-[30px] text-xl'>We know how large objects will act, but things on a small scale.</span>
             <div className='gap-[10px]'><button className='uppercase bg-[#2DC071] py-[15px] leading-8 rounded-[5px] px-[40px] font-bold text-2xl'>Shop Now</button></div>
           </div>

@@ -4,7 +4,7 @@ import { structureTool } from "sanity/structure";
 import { schemaTypes } from "./schema";
 
 
-const SanityCOnfig = defineConfig({
+export const SanityCOnfig = defineConfig({
     name: "default",
     title: "Bandage Store",
     projectId: "kt1ejdfv",

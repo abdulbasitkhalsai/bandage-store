@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import {Montserrat} from 'next/font/google'
 import "./globals.css";
-import Script from "next/script"
+// import Script from "next/script"
 
 const myFont= Montserrat({weight: "400", subsets: ['latin']});
 

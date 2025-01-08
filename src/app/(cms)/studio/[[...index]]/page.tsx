@@ -1,10 +1,13 @@
-// 'use client'
-// import React from 'react'
+'use client'
 
-// const SanityStudio = () => {
-//   return (
-//     <NextStudio config={Sanity.config} />
-//   )
-// }
+import { SanityCOnfig } from "@/sanity/sanity.config"
+import { NextStudio } from "next-sanity/studio"
 
-// export default SanityStudio
+const SanityStudio = () => {
+  return (
+    <NextStudio config={SanityCOnfig}/>
+    // <NextStudio config={Sanity.config} />
+  )
+}
+
+export default SanityStudio

@@ -34,7 +34,7 @@ const Category = () => {
       </div>
       <div className='pb-12'>
         <ul className='flex gap-[15px] justify-center'>
-            {ProdCategory.map(item => (<li><Link href={"/"}>
+            {ProdCategory.map((item, index) => (<li key={index}><Link href={"/"}>
             
                 <div className="relative group w-full overflow-hidden rounded-lg shadow-lg">
                     <Image className='transition-transform duration-300 group-hover:scale-110' src={item.image} alt={item.altImage} width={205} height={223}/>
