@@ -29,7 +29,7 @@ console.log(pathSegments);
               {isLast ? (
                 <span className="text-gray-500">{decodeURIComponent(segment)}</span> // Current segment (non-clickable)
               ) : (
-                <Link href={segmentPath} className="text-blue-500 hover:underline">
+                <Link href={segmentPath} className="text-blue-500 text-wrap hover:underline">
                   {decodeURIComponent(segment)}
                 </Link>
               )}

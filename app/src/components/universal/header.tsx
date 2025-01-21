@@ -43,7 +43,7 @@ const Header = ({children} : {children? : ReactNode}) => {
             <li
               className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
               <span className="relative">
-                <Image className='cursor-pointer inline-block h-4 min-w-4' src={"/images/Icn-Cart.png"} width={16} height={16} layout='fixed' alt='Cart'></Image>
+                <Image className='cursor-pointer inline-block h-4 w-4' src={"/images/Icn-Cart.png"} width={16} height={16} alt='Cart'></Image>
                 <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
               </span>
             </li>
