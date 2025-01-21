@@ -37,7 +37,7 @@ const ProdCard = () => {
                  {product.map((product, index) => (<li key={index} className='relative w-fit lg:w-[239px] h-auto hover:underline hover:scale-105 transition-transform ease-in-out duration-300 underline-offset-8 hover:decoration-amber-400 hover:text-black hover:decoration-2'>
                    <Link href={`/products/${product._id}`}>
                    <div>
-                    <Image src={product.imageUrl} alt="Image" width={348} height={427}></Image>
+                    <Image  src={product.imageUrl} alt="Image" width={348} height={427}></Image>
                         {favStatus && <button className='absolute top-2 right-2' onClick={()=>handleFav()}><Image className='cursor-pointer inline-block' src={"/images/Icn-Fav.png"} width={16} height={16} alt='Favorites'></Image></button>}
                         {!favStatus && <button className='absolute top-2 right-2' onClick={()=>handleFav()} ><Image className='cursor-pointer inline-block' src={"/images/fav.jpg"} width={16} height={16} alt='Favorites'></Image></button>}
                    </div>
