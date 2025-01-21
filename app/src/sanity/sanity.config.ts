@@ -7,10 +7,10 @@ import { schemaTypes } from "./schema";
 export const SanityCOnfig = defineConfig({
     name: "default",
     title: "Bandage Store",
-    projectId: "syq2w7mv",
+    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
     plugins: [structureTool(), visionTool()],
-    dataset: "production",
-    basePath: "/studio",
+    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "",
+    basePath: process.env.NEXT_PUBLIC_SANITY_BASE_PATH,
     schema: {
         types: schemaTypes
     },
