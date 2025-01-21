@@ -1,126 +1,88 @@
-// import { createClient } from '@sanity/client'
-// import axios from 'axios'
-// import dotenv from 'dotenv'
-// import { fileURLToPath } from 'url'
-// import path from 'path'
-// import { url } from 'inspector'
-
-// // Load environment variables from .env.local
-// const __filename = fileURLToPath(import.meta.url)
-// const __dirname = path.dirname(__filename)
-// dotenv.config({ path: path.resolve(__dirname, '../.env.local') })
-// // Create Sanity client
-// const client = createClient({
-//   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-//   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-//   useCdn: false,
-//   token: process.env.SANITY_API_TOKEN,
-//   apiVersion: '2021-08-31'
-// })
-// async function uploadImageToSanity(imageUrl) {
-//   try {
-//     console.log(`Uploading image: ${imageUrl}`)
-//     const response = await axios.get(imageUrl, { responseType: 'arraybuffer' })
-//     const buffer = Buffer.from(response.data)
-//     const asset = await client.assets.upload('image', buffer, {
-//       filename: imageUrl.split('/').pop()
-//     })
-//     console.log(`Image uploaded successfully: ${asset._id}`)
-//     return asset._id
-//   } catch (error) {
-//     console.error('Failed to upload image:', imageUrl, error)
-//     return null
-//   }
-// }
-// async function importData() {
-//   try {
-//     console.log('Fetching products from API...')
-//     const response = await axios.get('https://677e430b94bde1c1252b27f0.mockapi.io/products')
-//     // .then(response => console.log(response.data))
-//     // .catch(error => console.error(error))
-//     const products = response.data
-//     console.log(`Fetched ${products.length} products`)
-//     for (const product of products) {
-//       console.log(`Processing product: ${product.title}`)
-//       let imageRef = null
-//       if (product.image) {
-//         imageRef = await uploadImageToSanity(product.image)
-//       }
-//       const sanityProduct = {
-//         _type: 'product',
-//         id: product.id,
-//         name: product.name,
-//         description: product.description,
-//         price: product.price,
-//         discountPercentage: 0,
-//         priceWithoutDiscount: product.price,
-//         rating: product.rating?.rate || 0,
-//         ratingCount: product.rating?.count || 0,
-//         tags: product.category ? [product.category] : [],
-//         sizes: [],
-//         // image: product.image || null,
-//         // image: product.image
-//         image: {
-//           _type: 'image',
-//           asset: {
-//               _type: 'reference',
-//               _ref: imageRef, // Set the correct asset reference ID
-//           },
-//       },
-//       }
-//       console.log('Uploading product to Sanity:', sanityProduct.name)
-//       const result = await client.create(sanityProduct)
-//       console.log(`Product uploaded successfully: ${result._id}`)
-//     }
-//     console.log('Data import completed successfully!')
-//   } catch (error) {
-//     console.error('Error importing data:', error)
-//   }
-// }
-// // import sanityClient from '@sanity/client';
-
-// // const client = sanityClient({
-// //   projectId: 'yourProjectId', // Replace with your project ID
-// //   dataset: 'yourDataset',    // Replace with your dataset name
-// //   token: 'yourEditorToken',  // Replace with your Editor token
-// //   useCdn: false,             // Do not use CDN for mutations
-// // });
-
-// const deleteDocument = async (documentId) => {
-//   try {
-//     await client.delete(documentId);
-//     console.log(`Document ${documentId} deleted successfully.`);
-//   } catch (error) {
-//     console.error('Error deleting document:', error);
-//   }
-// };
-
-// deleteDocument('yourDocumentId'); // Replace with the ID of the document you want to delete
-
-
-// importData()
-
-
 import { createClient } from '@sanity/client';
 
+// NEXT_PUBLIC_SANITY_PROJECT_ID=syq2w7mv,
+// NEXT_PUBLIC_SANITY_DATASET=production
+// SANITY_API_TOKEN= 
+
 const client = createClient({
-  projectId: process.env.SANITY_PROJECT_ID,   // Remove NEXT_PUBLIC_ for server-side usage
-  dataset: process.env.SANITY_DATASET,         // Remove NEXT_PUBLIC_ for server-side usage
-  apiVersion: '2023-01-01',                   // Use a recent date for the API version
-  token: process.env.SANITY_API_TOKEN,         // API token for private access
-  useCdn: false,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "syq2w7mv",
+  dataset: 'production',
+  useCdn: true,
+  apiVersion: '2025-01-13',
+  token: process.env.SANITY_API_TOKEN || 'skUulUAm5FCcPq9qo30t72QozrZ7ril9GgfTjUV8B5okEjQtYs3ENF1FHcgu3XXsrrIkhlVnYAKX4R6buFrGx1pwtMnTIuH0gdma6PUkJrTHvE5fD38M8B4xRlBXtyaBNhWI1V64QxhCLEoUFEWhtnZdWZNvGc3NDyCCs0Tb5I11vgKDBYQK',
 });
 
-async function deleteAllProducts() {
-  const query = '*[_type == "product"]';
-  const products = await client.fetch(query);
+async function uploadImageToSanity(imageUrl) {
+  try {
+    console.log(`Uploading image: ${imageUrl}`);
 
-  const deletePromises = products.map(product =>
-    client.delete(product._id)
-  );
+    const response = await fetch(imageUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch image: ${imageUrl}`);
+    }
 
-  await Promise.all(deletePromises);
-  console.log('All product documents have been deleted.');
+    const buffer = await response.arrayBuffer();
+    const bufferImage = Buffer.from(buffer);
+
+    const asset = await client.assets.upload('image', bufferImage, {
+      filename: imageUrl.split('/').pop(),
+    });
+
+    console.log(`Image uploaded successfully: ${asset._id}`);
+    return asset._id;
+  } catch (error) {
+    console.error('Failed to upload image:', imageUrl, error);
+    return null;
+  }
 }
 
-deleteAllProducts().catch(console.error);
+async function uploadProduct(product) {
+  try {
+    const imageId = await uploadImageToSanity(product.imageUrl);
+
+    if (imageId) {
+      const document = {
+        _type: 'product',
+        title: product.title,
+        price: product.price,
+        productImage: {
+          _type: 'image',
+          asset: {
+            _ref: imageId,
+          },
+        },
+        tags: product.tags,
+        dicountPercentage: product.dicountPercentage, // Typo in field name: dicountPercentage -> discountPercentage
+        description: product.description,
+        isNew: product.isNew,
+      };
+
+      const createdProduct = await client.create(document);
+      console.log(`Product ${product.title} uploaded successfully:`, createdProduct);
+    } else {
+      console.log(`Product ${product.title} skipped due to image upload failure.`);
+    }
+  } catch (error) {
+    console.error('Error uploading product:', error);
+  }
+}
+
+async function importProducts() {
+  try {
+    const response = await fetch('https://template6-six.vercel.app/api/products');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    
+    const products = await response.json();
+
+    for (const product of products) {
+      await uploadProduct(product);
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
+
+importProducts();

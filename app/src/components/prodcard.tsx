@@ -1,11 +1,22 @@
 'use client'
-import { FeaturedProd } from '@/constant'
+import { IProductProp } from '@/interfaces'
+import { GetProductData } from '@/sanity/sanity.query'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
 
 const ProdCard = () => {
     const [favStatus, SetFavStatus] = useState(false)
+    const [product , setProduct] = useState<IProductProp[]>([])
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const product = await GetProductData()
+            setProduct(product)
+        };
+        fetchProduct();
+    }, []);
+
     const handleFav = () => {
         SetFavStatus(!favStatus)
     }
@@ -23,18 +34,19 @@ const ProdCard = () => {
         <div className='bg-[#FFFFFF]'>
             <div className='flex flex-wrap py-8'>
                 <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-[#8B8B8B] font-medium text-[18px] leading-[32px] h-auto w-fit mx-auto justify-center'>
-                 {FeaturedProd.map((item, index) => (<li key={index} className='relative w-fit lg:w-[239px] h-auto hover:underline hover:scale-105 transition-transform ease-in-out duration-300 underline-offset-8 hover:decoration-amber-400 hover:text-black hover:decoration-2'>
-                   <Link href={`/products/${item.id}`}>
+                 {product.map((product, index) => (<li key={index} className='relative w-fit lg:w-[239px] h-auto hover:underline hover:scale-105 transition-transform ease-in-out duration-300 underline-offset-8 hover:decoration-amber-400 hover:text-black hover:decoration-2'>
+                   <Link href={`/products/${product._id}`}>
                    <div>
-                    <Image src={item.image} alt={item.altImage} width={348} height={427}></Image>
+                    <Image src={product.imageUrl} alt="Image" width={348} height={427}></Image>
                         {favStatus && <button className='absolute top-2 right-2' onClick={()=>handleFav()}><Image className='cursor-pointer inline-block' src={"/images/Icn-Fav.png"} width={16} height={16} alt='Favorites'></Image></button>}
                         {!favStatus && <button className='absolute top-2 right-2' onClick={()=>handleFav()} ><Image className='cursor-pointer inline-block' src={"/images/fav.jpg"} width={16} height={16} alt='Favorites'></Image></button>}
                    </div>
                    <div className='px-[25px] pt-[25px] pb-[35px] gap-[10px] flex flex-col text-center'>
-                        <h5 className='text-base font-bold tracking-[0.1px] text-[#252B42]'>{item.title}</h5>
-                        <p className='text-sm leading-6 text-[#737373] tracking-[0.2px] line-clamp-1'>{item.description}</p>
+                        <h5 className='text-base font-bold tracking-[0.1px] text-[#252B42]'>{product.title}</h5>
+                        <p className='text-sm leading-6 text-[#737373] tracking-[0.2px] line-clamp-2'>{product.description}</p>
                         <div className=''>
-                        <span className='text-base text-[#BDBDBD] font-bold tracking-[0.1px]'>{"$"+(item.price)}</span><span className='text-base font-bold tracking-[0.1px] text-[#23856D]'>{"$"+(item.price)}</span>
+                        {/* <span className='text-base text-[#BDBDBD] font-bold tracking-[0.1px]'>{"$"+(product.price)}</span> */}
+                        <span className='text-base font-bold tracking-[0.1px] text-[#23856D]'>{"$"+(product.price)}</span>
                         </div></div>
                         <div className='flex space-x-2 items-center justify-center'>
                             <div className='rounded-full h-4 w-4 bg-[#23A6F0]'></div>

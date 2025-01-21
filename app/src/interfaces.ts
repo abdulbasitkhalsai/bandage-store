@@ -27,3 +27,14 @@ export interface IlogosProp {
     image: string,
     altImage: string,
 }
+
+export interface IProductProp {
+    imageUrl : string;
+    price: number;
+    tags: string[];
+    dicountPercentage: number;
+    description: string;
+    isNew: boolean;
+    _id: string;
+    title: string;
+}

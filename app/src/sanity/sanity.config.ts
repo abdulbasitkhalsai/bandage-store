@@ -7,13 +7,13 @@ import { schemaTypes } from "./schema";
 export const SanityCOnfig = defineConfig({
     name: "default",
     title: "Bandage Store",
-    projectId: "kt1ejdfv",
+    projectId: "syq2w7mv",
     plugins: [structureTool(), visionTool()],
     dataset: "production",
     basePath: "/studio",
     schema: {
         types: schemaTypes
-    }
+    },
     
 })
 

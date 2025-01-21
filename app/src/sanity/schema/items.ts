@@ -1,8 +1,8 @@
 import { defineType } from "sanity"
 
-export const product = defineType({
-    name: "product",
-    title: "Product",
+export const items = defineType({
+    name: "items",
+    title: "items",
     type: "document",
     fields: [
         {

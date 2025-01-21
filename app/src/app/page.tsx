@@ -16,11 +16,9 @@ export default function Home() {
   return (
   <div>
 
-
     <UserContextProvider>
     <FavContextProvider>
 
-    {/* <loginContextProvider> */}
 
     <Header>
       <Ribbon></Ribbon>
@@ -28,7 +26,7 @@ export default function Home() {
     <Login/>
     <Hero1 />
     <Hero2 />
-    <ProdCard />
+    <ProdCard />    
     <Banner1 />
     <Banner2 />
     <Blog />
