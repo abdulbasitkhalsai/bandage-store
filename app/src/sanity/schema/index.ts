@@ -2,10 +2,11 @@
 // import { ProductSchema } from "./product";
 
 // import { items } from "./items";
+import { category } from "./category";
 import { product } from "./product";
 
 
-export const schemaTypes = [product]
+export const schemaTypes = [product, category]
 // , ProductSchema
 
 // homeSchema

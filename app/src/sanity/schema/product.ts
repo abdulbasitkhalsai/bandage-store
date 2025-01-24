@@ -6,6 +6,12 @@ export const product = defineType({
     type: "document",
     fields: [
         {
+            name: 'productId',
+            title: 'Product ID',
+            type: 'string',
+            validation: Rule => Rule.required(),
+        },    
+        {
             name: "title",
             title: "Title",
             validation: (rule) => rule.required(),
@@ -41,9 +47,27 @@ export const product = defineType({
             title:"Discount Percentage",
         },
         {
+            name: 'slug',
+            title: 'Slug',
+            type: 'slug',
+            options: {
+              source: 'title',
+              maxLength: 96,
+        }
+        },
+        {
+            name: 'category',
+            title: 'Category',
+            type:'reference',
+            to: [
+                { type: 'category' },
+            ],
+        },
+        {
             name:"isNew",
             type:"boolean",
             title:"New Badge",
-        }
+        },
+
     ]
 })
