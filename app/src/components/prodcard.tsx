@@ -35,7 +35,11 @@ const ProdCard = () => {
             <div className='flex flex-wrap py-8'>
                 <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-[#8B8B8B] font-medium text-[18px] leading-[32px] h-auto w-fit mx-auto justify-center'>
                  {product.map((product, index) => (<li key={index} className='relative w-fit lg:w-[239px] h-auto hover:scale-105 transition-transform ease-in-out duration-300 underline-offset-8'>
-                   <Link href={`/products/${product._id}`}>
+                {
+                    product.slug ? (
+
+               
+                   <Link href={`/products/${product.slug.current}`}>
                    <div>
                     <Image className='w-[348px] h-[300px]' src={product.imageUrl} alt="Image" width={348} height={427}></Image>
                         {favStatus && <button className='absolute top-2 right-2' onClick={()=>handleFav()}><Image className='cursor-pointer inline-block' src={"/images/Icn-Fav.png"} width={16} height={16} alt='Favorites'></Image></button>}
@@ -54,7 +58,10 @@ const ProdCard = () => {
                             <div className='rounded-full h-4 w-4 bg-[#E77C40]'></div>
                             <div className='rounded-full h-4 w-4 bg-[#252B42]'></div>
                         </div>
-                        </Link>
+                        </Link> 
+                    ) : (
+                        <div>Product Not available</div>
+                    )}
                     </li>))}
       </ul>
             </div>

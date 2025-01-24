@@ -1,3 +1,5 @@
+import { Slug } from "sanity";
+
 export interface ILink {
     title: string,
     link: string
@@ -37,4 +39,6 @@ export interface IProductProp {
     isNew: boolean;
     _id: string;
     title: string;
+    slug: {current : string},
+    productId: string;
 }

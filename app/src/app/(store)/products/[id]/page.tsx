@@ -8,9 +8,10 @@ import Link from 'next/link'
 const SingleProd = async ({params} : {params : {id :string}}) => {  
   const prodData = await GetProductData();
     
-  const product = prodData.find((item: IProductProp) => {
-    return item._id === params.id.trim();  // Use .trim() to ensure no extra spaces
-  });
+  const product = prodData.find((item: IProductProp) =>
+     item.slug.current === params.id);  // Use .trim() to ensure no extra spaces
+  console.log(product?.slug?.current, params.id);
+  // );
   return (
     <div className='bg-[#FAFAFA]'>
       <Breadcrumbs/>
@@ -18,10 +19,10 @@ const SingleProd = async ({params} : {params : {id :string}}) => {
       { product && 
       <div className='flex flex-col lg:flex-row gap-[30px]'>
         <div className='flex flex-col gap-5'>
-          <Image className='md:w-[506px] w-fit h-[450px]' src={product.imageUrl} alt="Furniture" width={506} height={450}></Image>
+          <Image className='md:w-[506px] w-fit h-[450px]' src={product.imageUrl || 'ProdCard-8.png'} alt="Furniture" width={506} height={450}></Image>
           <div className='flex gap-5'>
-            <Image className='w-fit md:w-100 h-[75px]' src={product.imageUrl} alt="Furniture" width={100} height={75}></Image>
-            <Image className='w-fit md:w-100 h-[75px]' src={product.imageUrl} alt="Furniture" width={100} height={75}></Image>
+            <Image className='w-fit md:w-100 h-[75px]' src={product.imageUrl || 'ProdCard-8.png'} alt="Furniture" width={100} height={75}></Image>
+            <Image className='w-fit md:w-100 h-[75px]' src={product.imageUrl || 'ProdCard-8.png'} alt="Furniture" width={100} height={75}></Image>
           </div>
         </div>
         <div className='flex flex-col text-left gap-2 p-3 max-w-[710px]'>
@@ -31,7 +32,7 @@ const SingleProd = async ({params} : {params : {id :string}}) => {
           </div>
           <div className='text-[#252B42] font-bold text-2xl flex gap-3 my-4'>
           <div className='opacity-50'><del>${product.price}</del></div>
-          <div>${product.discPrice}</div>
+          <div>${product.price}</div>
           </div>
           <div className='flex gap-2'>
             <span className='text-[#737373]'>Availiblity :</span>
