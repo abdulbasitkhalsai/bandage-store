@@ -42,3 +42,11 @@ export interface IProductProp {
     slug: {current : string},
     productId: string;
 }
+
+export interface ICategoryProp {
+    _id: string;
+    categoryName : string,
+    imageUrl : string;
+    slug: {current : string}
+    productCount : number
+}

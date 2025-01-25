@@ -1,4 +1,5 @@
-import ProdCard from '@/components/prodcard'
+import ProductGrid from '@/components/universal/productgrid'
+import ProdCard from '@/components/universal/productgrid'
 import Breadcrumbs from '@/components/universal/breadcrumbs'
 import { IProductProp } from '@/interfaces'
 import { GetProductData } from '@/sanity/sanity.query'
@@ -10,8 +11,6 @@ const SingleProd = async ({params} : {params : {id :string}}) => {
     
   const product = prodData.find((item: IProductProp) =>
      item.slug.current === params.id);  // Use .trim() to ensure no extra spaces
-  console.log(product?.slug?.current, params.id);
-  // );
   return (
     <div className='bg-[#FAFAFA]'>
       <Breadcrumbs/>
@@ -59,7 +58,7 @@ const SingleProd = async ({params} : {params : {id :string}}) => {
     </div>
     {!product && <div className='h-24 w-full text-center flex items-center justify-center font-bold text-3xl'>Product Not Found Back to the <button className='rounded-md bg-black m-2'><Link className='px-4 py-6 text-white' href={"/"}>Home Page</Link></button></div>}
 
-    <ProdCard/>
+    <ProductGrid/>
     
     </div>
   )

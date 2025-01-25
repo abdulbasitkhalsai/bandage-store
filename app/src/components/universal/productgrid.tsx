@@ -6,7 +6,7 @@ import Link from 'next/link'
 import React, { useState, useEffect } from 'react'
 
 
-const ProdCard = () => {
+const ProductGrid= () => {
     const [favStatus, SetFavStatus] = useState(false)
     const [product , setProduct] = useState<IProductProp[]>([])
     useEffect(() => {
@@ -71,4 +71,4 @@ const ProdCard = () => {
   )
 }
 
-export default ProdCard
+export default ProductGrid

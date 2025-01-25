@@ -240,7 +240,7 @@ export const blog : IProdCard[] = [
 }
 ]
 
-export const ProdCategory : IProdCategroy[] = [
+export const ProdCategory1 : IProdCategroy[] = [
   {
     id: "Category-1",
     image: "/images/Category1.jpg",

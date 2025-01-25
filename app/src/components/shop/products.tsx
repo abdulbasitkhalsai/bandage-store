@@ -1,11 +1,11 @@
 import React from 'react'
-import ProdCard from '../prodcard'
 import Image from 'next/image'
+import ProductGrid from '../universal/productgrid'
 
 const Products = () => {
   return (
     <div>
-      <div className='flex justify-around py-8 gap-20 items-center'>
+      <div className='flex justify-around py-8 gap-20 items-center flex-wrap'>
         <span>Showing all 12 results</span>
         <span className='flex gap-[15px] items-center'>
           <span>Views:</span>
@@ -20,7 +20,7 @@ const Products = () => {
           <button className='py-[10px] px-5 bg-[#23A6F0] border border-s rounded-[5px]'>Filter</button>
         </span>
       </div>
-      <ProdCard/>
+      <ProductGrid/>
       <div className='py-12'>
         <ul className="flex mx-auto border-2 divide-x-2 rounded-lg overflow-hidden w-max font-[sans-serif]">
         <li className="flex items-center justify-center shrink-0 px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm text-gray-800">

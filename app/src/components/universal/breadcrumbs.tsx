@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 const Breadcrumbs = () => {
   const pathname = usePathname(); // Gets the current path (e.g., '/home/shop/product')
   const pathSegments = pathname.split('/').filter((segment) => segment); // Split into segments and remove empty parts
-console.log(pathSegments);
   return (
     <nav aria-label="Breadcrumb" className='bg-[#FAFAFA] py-6'>
       <ol className="wrapper flex items-center space-x-2 gap-[30px] leading-6 text-sm">
