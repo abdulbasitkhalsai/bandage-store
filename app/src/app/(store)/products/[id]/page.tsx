@@ -1,5 +1,4 @@
 import ProductGrid from '@/components/universal/productgrid'
-import ProdCard from '@/components/universal/productgrid'
 import Breadcrumbs from '@/components/universal/breadcrumbs'
 import { IProductProp } from '@/interfaces'
 import { GetProductData } from '@/sanity/sanity.query'

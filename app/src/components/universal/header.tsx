@@ -1,103 +1,133 @@
-'use client'
+'use client';
 
-import { navItems } from '@/constant'
-import LoginContext from '@/context/loginContext'
-import UserContext from '@/context/userContext'
-import Image from 'next/image'
-import Link from 'next/link'
-// import { useRouter } from 'next/router'
-import React, { ReactNode, useContext, useState } from 'react'
-
+import Link from "next/link";
+import { navItems } from "@/constant";
+import Image from "next/image";
+import { useUserContext } from "@/context/userContextProvider";
+import {useLoginContext } from "@/context/loginContextProvider";
+import { ReactNode, useState } from "react";
+import Modals from "./modals";
 const Header = ({children} : {children? : ReactNode}) => {
-  const [toogle, SetToogle] = useState(false)
-  const {User} = useContext(UserContext)
-  const pop = useContext(LoginContext)
+  const [toggle, setToggle] = useState(false); // Mobile menu toggle state
+  const { User, isAuthenticated } = useUserContext();
+  const { open, modalType, setOpen, setModalType } = useLoginContext(); // Use context directly
 
+  console.log("Login Context in Header:", { open, modalType, setOpen, setModalType });
+
+  const handleModalOpen = (type: 'login' | 'signup') => {
+    console.log("Opening Modal for:", type); // Add this line
+    console.log("type: " + type)
+    setModalType(type); // Set modal type (login or signup)
+    setOpen(true); // Open the modal
+  };
   return (
-    <header className='font-[sans-serif] min-h-[40px] tracking-wide relative z-50'>
+    <header className="font-[sans-serif] min-h-[40px] tracking-wide z-50 shadow-md sticky top-0 w-full bg-[#FFFFFF]">
     <div>{children}</div>
-    <div className='wrapper'>
-      <div className='flex flex-wrap items-center py-3 px-4 bg-[#FFFFFF] gap-y-4 gap-x-4 justify-between w-full overflow-hidden'>
-        <div><Link href={"/"} className='text-[#252B42] font-bold text-2xl tracking-[0.1px]'>Bandage</Link></div>
-        <div className='flex flex-1 w-fit lg:w-auto justify-end lg:justify-between items-center sm:ml-4'>      
-        <div id="collapseMenu"
-          className="max-lg:hidden lg:!flex lg:items-center max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50 justify-end">
-          <ul className='hidden lg:flex space-x-6 ml-10 font-bold text-sm leading-5 tracking-[0.2px] text-[#737373]'>
-            {navItems.map((item, index) => (<li key={index} className='max-lg:border-b max-lg:py-3 relative lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300'><Link href={item.link}>{item.title}</Link></li>))}
-          </ul>
-        </div>
-        <div className='flex items-center max-sm:ml-auto'>
-         <div>{User && `Hey ${User}`}</div>
-         <div>{!User && <div className='sm:flex items-center gap-[5px] p-[15px] hidden'>
-              <Image className='w-3 h-3' src={"/images/Icn-User.png"} alt='User' width={12} height={12}></Image>
-              <button className='' onClick={()=> pop?.onClose(true)}>Log In</button>
-              <div>/</div>
-              <button className='' onClick={()=> pop?.onClose(true)}>Register</button>
+      <div className="wrapper">
+        <div className="flex flex-wrap items-center py-3 px-4 gap-y-4 gap-x-4 justify-between w-full overflow-hidden">
+          <Link href="/" className="text-[#252B42] font-bold text-2xl tracking-[0.1px]">Bandage</Link>
+          {/* Desktop Navigation */}
+          <div className="flex flex-1 w-fit lg:w-auto justify-end lg:justify-between items-center sm:ml-4">
+            <div className="max-lg:hidden lg:!flex lg:items-center max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50 justify-end">
+            <ul className="hidden lg:flex space-x-6 ml-10 font-bold text-sm leading-5 tracking-[0.2px] text-[#737373]">
+              {navItems.map((item, index) => (
+                <li key={index} className="max-lg:border-b max-lg:py-3 relative lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
+                  <Link href={item.link} className="hover:text-black">
+                    {item.title}
+                  </Link>
+                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-black group-hover:w-full transition-all"></span>
+                </li>
+              ))}
+            </ul>
+          </div>
+            {/* User Authentication Links */}
+            <div className="flex items-center max-sm:ml-auto">
+            {isAuthenticated ? (
+              <span className="font-medium">Hey, {User}!</span>
+            ) : (
+              <div className="flex gap-4">
+                <button
+                  onClick={() => handleModalOpen('login')}
+                  className="text-blue-500 hover:underline"
+                  >
+                  Login
+                </button>
+                <button
+                  onClick={() => handleModalOpen('signup')}
+                  className="text-blue-500 hover:underline"
+                  >
+                  Sign Up
+                </button>
+              </div>
+            )}
             </div>
-              }</div>
-          <ul className="flex space-x-4 items-center w-auto">
-            <li
-              className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-              <Image src={"/images/Icn-Search.png"} className='min-w-4 h-4 hidden sm:visible' width={16} height={16} alt='Search'></Image>
-            </li>
-            <li
-              className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-              <span className="relative">
-                <Image className='cursor-pointer inline-block h-4 w-4' src={"/images/Icn-Cart.png"} width={16} height={16} alt='Cart'></Image>
-                <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-              </span>
-            </li>
-            <li
-              className="relative px-1 lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
-              <span className="relative">
-                <Image className='cursor-pointer inline-block min-w-4 h-4' src={"/images/Icn-Fav.png"} width={16} height={16} alt='Favorites'></Image>
-                <span className="absolute left-auto -ml-1 -top-1 rounded-full bg-red-500 px-1 py-0 text-xs text-white">0</span>
-                {/* <span className="absolute -top-1 right-0 rounded-full bg-red-500 px-[6px] py-[1px] text-[10px] leading-none text-white flex items-center justify-center min-w-[16px] max-w-[24px] overflow-hidden">0</span> */}
-              </span>
-            </li>
-          </ul>
+          </div>
 
-    
-<div className="relative w-auto">
-  <button
-    id="toggleOpen"
-    className="lg:hidden ml-6 z-[60]"
-    onClick={() => SetToogle((prev) => !prev)}
-  >
-    <Image
-      src="/images/Icn-Menu.png"
-      alt="Menu"
-      width={24}
-      height={13.71}
-      className="object-contain min-w-4"
-    />
-  </button>
-  {toogle && (
-    <div
-      className="absolute top-[100%] right-0 w-screen bg-[#FFFFFF] rounded-md shadow-lg border border-gray-300 z-[50] transition-transform duration-300 overflow-hidden"
-    >
-      <ul className="p-4 space-y-4 text-center">
-        {navItems.map((item, index) => (
-          <li key={index}>
-            <Link
-              className="text-lg font-medium hover:text-gray-700"
-              href={item.link}
-              onClick={() => SetToogle(false)}
-            >
-              {item.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div>
+          {/* Mobile Menu Toggle */}
+          <button
+            className="lg:hidden"
+            onClick={() => setToggle((prev) => !prev)}
+          >
+            <Image
+              src="/images/Icn-Menu.png"
+              alt="Menu"
+              width={24}
+              height={24}
+              />
+          </button>
         </div>
-      </div>
-      </div>
-    </div>
-  </header>
-  )
-}
 
-export default Header
+        {/* Mobile Navigation */}
+        {toggle && (
+          <div className="absolute top-full left-0 w-full bg-white shadow-lg border-t">
+            <ul className="flex flex-col items-center py-4 space-y-4">
+              {navItems.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    href={item.link}
+                    onClick={() => setToggle(false)}
+                    className="text-lg font-medium text-[#252B42] hover:text-black"
+                    >
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+
+            {/* Mobile Authentication Links */}
+            {!isAuthenticated && (
+              <div className="flex flex-col items-center py-4 space-y-2">
+                <button
+                  onClick={() => {
+                    handleModalOpen('login');
+                    setToggle(false); // Close mobile menu
+                  }}
+                  className="text-blue-500 hover:underline"
+                  >
+                  Login
+                </button>
+                <button
+                  onClick={() => {
+                    handleModalOpen('signup');
+                    setToggle(false); // Close mobile menu
+                  }}
+                  className="text-blue-500 hover:underline"
+                >
+                  Sign Up
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Modal for Login/Signup */}
+      <Modals />
+    </header>
+            // </LoginContextProvider>
+  );
+};
+
+export default Header;
+
+  

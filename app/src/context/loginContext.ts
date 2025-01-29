@@ -1,10 +1,12 @@
-import { createContext } from "react";
+// import { createContext } from 'react';
 
-const LoginContext = createContext<
-    {
-        open: boolean,
-        onClose: React.Dispatch<React.SetStateAction<boolean>>    
-    } | null
-    >(null)
+// export type LoginContextType = {
+//   open: boolean;
+//   onClose: (state: boolean) => void;
+//   modalType: 'login' | 'signup'; // Add modalType
+//   setModalType: (type: 'login' | 'signup') => void; // Add setModalType
+// };
 
-export default LoginContext;
+// const LoginContext = createContext<LoginContextType | null>(null);
+
+// export default LoginContext;

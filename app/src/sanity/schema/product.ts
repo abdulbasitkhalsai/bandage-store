@@ -68,6 +68,18 @@ export const product = defineType({
             type:"boolean",
             title:"New Badge",
         },
+        {
+            name: "variants",
+            title: "Variants",
+            type: "array",
+            of: [
+              {
+                type: "reference",
+                to: [{ type: "variant" }],
+              },
+            ],
+            description: "Variants for this product (e.g., colors, sizes, etc.)",
+          }
 
     ]
 })

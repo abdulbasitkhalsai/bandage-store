@@ -1,4 +1,3 @@
-import { Slug } from "sanity";
 
 export interface ILink {
     title: string,

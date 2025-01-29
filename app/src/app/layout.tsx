@@ -1,23 +1,8 @@
 import type { Metadata } from "next";
-// import localFont from "next/font/local";
-// import {Montserrat} from 'next/font/google'
 import "./globals.css";
-import UserContextProvider from "@/context/userContextProvider";
-import LoginContextProvider from "@/context/loginContextProvider";
-// import Script from "next/script"
-
-// const myFont= Montserrat({weight: "400", subsets: ['latin']});
-
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
+import { CartProvider } from "@/context/cartContextProvider";
+import { UserContextProvider } from "@/context/userContextProvider";
+import { LoginContextProvider } from "@/context/loginContextProvider";
 
 export const metadata: Metadata = {
   title: "BANDAGE STORE",
@@ -32,17 +17,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="{`${geistSans.variable} ${geistMono.variable} antialiased ${myFont.className}`}"
+        className="antialiased"
       >
-        <UserContextProvider>
         <LoginContextProvider>
-
-        
-
+        <UserContextProvider>
+        <CartProvider>
         {children}
-
-        </LoginContextProvider>
+        </CartProvider>
         </UserContextProvider>
+        </LoginContextProvider>
       </body>
     </html>
   );

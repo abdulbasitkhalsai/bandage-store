@@ -15,7 +15,7 @@ const products = category?._id? await GetCategoryProductsData(category?._id): []
     <Breadcrumbs/>
     <div className="wrapper w-full"> 
         
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-[#8B8B8B] font-medium text-[18px] leading-[32px] h-auto w-full mx-auto justify-center text-center items-center bg-slate-600">
+    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 text-[#8B8B8B] font-medium text-[18px] leading-[32px] h-auto w-full mx-auto justify-center text-center items-center">
     {products && products.length > 0 ? (products.map((product: IProductProp) => (<ProdCard key={product._id} product={product} />))
         ) : (
             <p className="text-black text-center w-full block font-bold mx-auto">No products available in this category.</p>
