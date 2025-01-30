@@ -1,35 +1,30 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-import sanityClient from '@sanity/client';
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 
-const client = sanityClient({
-  projectId: 'your-project-id',
-  dataset: 'production',
-  useCdn: false,
-});
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
+let users: User[] = [];
 
 export async function POST(req: Request) {
-  const { name, email, phone, address, password } = await req.json();
+  const { name, email, password } = await req.json();
 
-  try {
-    // Hash the password before saving it to Sanity
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const newUser = {
-      _type: 'user',
-      name,
-      email,
-      phone,
-      address,
-      password: hashedPassword,
-      role: 'user', // default role
-      createdAt: new Date().toISOString(),
-    };
-
-    await client.create(newUser);
-
-    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ message: 'Error registering user' }, { status: 500 });
+  // Check if user already exists
+  const existingUser = users.find((u) => u.email === email);
+  if (existingUser) {
+    return NextResponse.json({ message: "User already exists" }, { status: 400 });
   }
+
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Store user
+  const newUser = { id: String(users.length + 1), name, email, password: hashedPassword };
+  users.push(newUser);
+
+  return NextResponse.json({ message: "User registered successfully" }, { status: 201 });
 }

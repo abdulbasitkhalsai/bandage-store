@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/cartContextProvider";
 import { UserContextProvider } from "@/context/userContextProvider";
 import { LoginContextProvider } from "@/context/loginContextProvider";
+import SessionWrapper from "@/components/SessionWrapper";
 
 export const metadata: Metadata = {
   title: "BANDAGE STORE",
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body
         className="antialiased"
-      >
+      > 
+        <SessionWrapper>
+
         <LoginContextProvider>
         <UserContextProvider>
         <CartProvider>
@@ -26,6 +29,7 @@ export default function RootLayout({
         </CartProvider>
         </UserContextProvider>
         </LoginContextProvider>
+        </SessionWrapper>
       </body>
     </html>
   );

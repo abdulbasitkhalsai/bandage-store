@@ -3,77 +3,95 @@
 import Link from "next/link";
 import { navItems } from "@/constant";
 import Image from "next/image";
-import { useUserContext } from "@/context/userContextProvider";
-import {useLoginContext } from "@/context/loginContextProvider";
+import { useLoginContext } from "@/context/loginContextProvider";
 import { ReactNode, useState } from "react";
 import Modals from "./modals";
-const Header = ({children} : {children? : ReactNode}) => {
-  const [toggle, setToggle] = useState(false); // Mobile menu toggle state
-  const { User, isAuthenticated } = useUserContext();
-  const { open, modalType, setOpen, setModalType } = useLoginContext(); // Use context directly
+import { useSession, signOut } from "next-auth/react";
+import { UserCircleIcon } from "lucide-react";
 
-  console.log("Login Context in Header:", { open, modalType, setOpen, setModalType });
+
+const Header = ({ children }: { children?: ReactNode }) => {
+  const { data: session } = useSession(); // No 'loading' check - Navbar renders immediately
+  const [toggle, setToggle] = useState(false);
+  const {setOpen, setModalType } = useLoginContext();
 
   const handleModalOpen = (type: 'login' | 'signup') => {
-    console.log("Opening Modal for:", type); // Add this line
-    console.log("type: " + type)
-    setModalType(type); // Set modal type (login or signup)
-    setOpen(true); // Open the modal
+    setModalType(type);
+    setOpen(true);
   };
+
   return (
     <header className="font-[sans-serif] min-h-[40px] tracking-wide z-50 shadow-md sticky top-0 w-full bg-[#FFFFFF]">
-    <div>{children}</div>
+      <div>{children}</div>
       <div className="wrapper">
         <div className="flex flex-wrap items-center py-3 px-4 gap-y-4 gap-x-4 justify-between w-full overflow-hidden">
-          <Link href="/" className="text-[#252B42] font-bold text-2xl tracking-[0.1px]">Bandage</Link>
+          {/* Brand Logo */}
+          <Link href="/" className="text-[#252B42] font-bold text-2xl tracking-[0.1px]">
+            Bandage
+          </Link>
+
           {/* Desktop Navigation */}
-          <div className="flex flex-1 w-fit lg:w-auto justify-end lg:justify-between items-center sm:ml-4">
-            <div className="max-lg:hidden lg:!flex lg:items-center max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-40 max-lg:before:inset-0 max-lg:before:z-50 justify-end">
+          <nav className="flex flex-1 w-fit lg:w-auto justify-end lg:justify-between items-center sm:ml-4">
             <ul className="hidden lg:flex space-x-6 ml-10 font-bold text-sm leading-5 tracking-[0.2px] text-[#737373]">
               {navItems.map((item, index) => (
-                <li key={index} className="max-lg:border-b max-lg:py-3 relative lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
+                <li key={index} className="relative lg:hover:after:absolute lg:after:bg-white lg:after:w-0 lg:hover:after:w-full lg:hover:after:h-[2px] lg:after:block lg:after:-bottom-4 lg:after:transition-all lg:after:duration-300">
                   <Link href={item.link} className="hover:text-black">
                     {item.title}
                   </Link>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-black group-hover:w-full transition-all"></span>
                 </li>
               ))}
             </ul>
-          </div>
-            {/* User Authentication Links */}
-            <div className="flex items-center max-sm:ml-auto">
-            {isAuthenticated ? (
-              <span className="font-medium">Hey, {User}!</span>
-            ) : (
-              <div className="flex gap-4">
-                <button
-                  onClick={() => handleModalOpen('login')}
-                  className="text-blue-500 hover:underline"
-                  >
-                  Login
-                </button>
-                <button
-                  onClick={() => handleModalOpen('signup')}
-                  className="text-blue-500 hover:underline"
-                  >
-                  Sign Up
-                </button>
-              </div>
-            )}
+
+            {/* User Authentication */}
+            <div className="flex items-center max-sm:ml-auto ml-6">
+              {session ? (
+                <div className="flex items-center gap-4">
+                  {/* User Avatar */}
+                  {session.user?.image ? (
+                    <Image
+                      src={session.user.image}
+                      alt="User Avatar"
+                      width={36}
+                      height={36}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <Image
+                      src="/images/default-avatar.png" // Fallback icon
+                      alt="Default Avatar"
+                      width={36}
+                      height={36}
+                      className="rounded-full"
+                    />
+                  )}
+
+                  {/* Username */}
+                  <span className="font-medium">Hey, {session.user?.name}!</span>
+
+                  {/* Logout Button */}
+                  <button onClick={() => signOut()} className="text-red-500 hover:underline">
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-4">
+                  {/* Default User Icon when logged out */}
+                  {/* Login/Signup Buttons */}
+                  <button onClick={() => handleModalOpen('login')} className="text-blue-500 hover:underline flex gap-1">
+                  <UserCircleIcon className="w-6 h-6 text-gray-500" />
+                    Login
+                  </button>
+                  <button onClick={() => handleModalOpen('signup')} className="text-blue-500 hover:underline">
+                    Sign Up
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
+          </nav>
 
           {/* Mobile Menu Toggle */}
-          <button
-            className="lg:hidden"
-            onClick={() => setToggle((prev) => !prev)}
-          >
-            <Image
-              src="/images/Icn-Menu.png"
-              alt="Menu"
-              width={24}
-              height={24}
-              />
+          <button className="lg:hidden" onClick={() => setToggle((prev) => !prev)}>
+            <Image src="/images/Icn-Menu.png" alt="Menu" width={24} height={24} />
           </button>
         </div>
 
@@ -83,36 +101,20 @@ const Header = ({children} : {children? : ReactNode}) => {
             <ul className="flex flex-col items-center py-4 space-y-4">
               {navItems.map((item, index) => (
                 <li key={index}>
-                  <Link
-                    href={item.link}
-                    onClick={() => setToggle(false)}
-                    className="text-lg font-medium text-[#252B42] hover:text-black"
-                    >
+                  <Link href={item.link} onClick={() => setToggle(false)} className="text-lg font-medium text-[#252B42] hover:text-black">
                     {item.title}
                   </Link>
                 </li>
               ))}
             </ul>
 
-            {/* Mobile Authentication Links */}
-            {!isAuthenticated && (
+            {/* Mobile Authentication */}
+            {!session && (
               <div className="flex flex-col items-center py-4 space-y-2">
-                <button
-                  onClick={() => {
-                    handleModalOpen('login');
-                    setToggle(false); // Close mobile menu
-                  }}
-                  className="text-blue-500 hover:underline"
-                  >
+                <button onClick={() => { handleModalOpen('login'); setToggle(false); }} className="text-blue-500 hover:underline">
                   Login
                 </button>
-                <button
-                  onClick={() => {
-                    handleModalOpen('signup');
-                    setToggle(false); // Close mobile menu
-                  }}
-                  className="text-blue-500 hover:underline"
-                >
+                <button onClick={() => { handleModalOpen('signup'); setToggle(false); }} className="text-blue-500 hover:underline">
                   Sign Up
                 </button>
               </div>
@@ -124,10 +126,7 @@ const Header = ({children} : {children? : ReactNode}) => {
       {/* Modal for Login/Signup */}
       <Modals />
     </header>
-            // </LoginContextProvider>
   );
 };
 
 export default Header;
-
-  
