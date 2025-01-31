@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/cartContextProvider";
 import { UserContextProvider } from "@/context/userContextProvider";
 import { LoginContextProvider } from "@/context/loginContextProvider";
 import SessionWrapper from "@/components/SessionWrapper";
+import { WishlistProvider } from "@/context/wishListContextProvider";
 
 export const metadata: Metadata = {
   title: "BANDAGE STORE",
@@ -21,7 +22,7 @@ export default function RootLayout({
         className="antialiased"
       > 
         <SessionWrapper>
-
+        <WishlistProvider>
         <LoginContextProvider>
         <UserContextProvider>
         <CartProvider>
@@ -29,6 +30,7 @@ export default function RootLayout({
         </CartProvider>
         </UserContextProvider>
         </LoginContextProvider>
+        </WishlistProvider>
         </SessionWrapper>
       </body>
     </html>
