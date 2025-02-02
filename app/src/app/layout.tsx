@@ -4,7 +4,7 @@ import { CartProvider } from "@/context/cartContextProvider";
 import { UserContextProvider } from "@/context/userContextProvider";
 import { LoginContextProvider } from "@/context/loginContextProvider";
 import SessionWrapper from "@/components/SessionWrapper";
-import { WishlistProvider } from "@/context/wishListContextProvider";
+import { WishlistProvider } from "@/context/wishlistContextProvider";
 
 export const metadata: Metadata = {
   title: "BANDAGE STORE",

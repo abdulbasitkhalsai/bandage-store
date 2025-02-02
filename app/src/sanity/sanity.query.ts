@@ -55,4 +55,42 @@ export const GetCategoryProductsData = async (categoryId: string) => {
     return products;
 };
 
-  
+// Fetch user's wishlist from Sanity
+export const getUserWishlist = async (email: string) => {
+  const data = await sanityClient.fetch(
+    groq`*[_type == "user" && email == $email]{wishlist[]->{productId, title, price, imageUrl}}`,
+    { email }
+  );
+  return data?.[0]?.wishlist || [];
+};
+
+// Add product to user's wishlist
+export const addToUserWishlist = async (email: string, productId: string) => {
+  const user = await sanityClient.fetch(
+    groq`*[_type == "user" && email == $email][0]`,
+    { email }
+  );
+
+  if (user) {
+    await sanityClient
+      .patch(user._id)
+      .setIfMissing({ wishlist: [] })
+      .insert('after', 'wishlist[-1]', [{ _ref: productId, _type: 'reference' }])
+      .commit();
+  }
+};
+
+// Remove product from user's wishlist
+export const removeFromUserWishlist = async (email: string, productId: string) => {
+  const user = await sanityClient.fetch(
+    groq`*[_type == "user" && email == $email][0]`,
+    { email }
+  );
+
+  if (user) {
+    await sanityClient
+      .patch(user._id)
+      .unset([`wishlist[_ref=="${productId}"]`])
+      .commit();
+  }
+};

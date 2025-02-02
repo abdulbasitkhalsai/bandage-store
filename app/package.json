@@ -13,7 +13,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-slot": "^1.1.1",
-    "@sanity/client": "^6.24.3",
+    "@sanity/client": "^6.27.2",
     "@sanity/vision": "^3.68.3",
     "axios": "^1.7.9",
     "bcryptjs": "^2.4.3",
