@@ -22,15 +22,15 @@ export default function RootLayout({
         className="antialiased"
       > 
         <SessionWrapper>
-        <WishlistProvider>
         <LoginContextProvider>
+        <WishlistProvider>
         <UserContextProvider>
         <CartProvider>
         {children}
         </CartProvider>
         </UserContextProvider>
-        </LoginContextProvider>
         </WishlistProvider>
+        </LoginContextProvider>
         </SessionWrapper>
       </body>
     </html>

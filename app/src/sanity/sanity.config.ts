@@ -8,15 +8,15 @@ const isServer = typeof window === "undefined";
 export const SanityConfig = defineConfig({
     name: "default",
     title: "Bandage Store",
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
+    projectId: "syq2w7mv",
     plugins: [structureTool(), visionTool()],
-    dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "",
+    dataset: "production",
     basePath: process.env.NEXT_PUBLIC_SANITY_BASE_PATH,
     schema: {
         types: schemaTypes
     },
     api: {
-        token: isServer ? process.env.SANITY_API_TOKEN || "" : undefined, // Only include the token on the server
+        token: process.env.SANITY_API_TOKEN || "" , // Only include the token on the server
         useCdn: !isServer // Use CDN for faster reads but not for server-side mutations
     }
     
