@@ -1,4 +1,5 @@
-import Header from '@/components/universal/header1'
+
+import Header from '@/components/universal/header'
 import React from 'react'
 
 const Pricing = () => {

@@ -298,7 +298,7 @@ export const removeFromUserWishlist = async (userId: string, productId: string) 
 };
 
 // Fetch full product details using product IDs
-export const fetchProductsByIds = async (productIds: string[]): Promise<any[]> => {
+export const fetchProductsByIds = async (productIds: string[]): Promise<IProductProp[]> => {
   if (productIds.length === 0) return [];
 
   const query = `*[_type == "product" && _id in $productIds]`;

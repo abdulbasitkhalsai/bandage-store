@@ -1,17 +1,66 @@
+// import { NextResponse } from "next/server";
+// import sanityClient from "@/sanity/sanity.client";
+
+// // Define the type for wishlist items
+// interface WishlistItem {
+//   _ref: string;
+// }
+
+// export async function GET(req: Request) {
+//   try {
+//     const { searchParams } = new URL(req.url);
+//     const userId = searchParams.get("userId");
+//     const productId = searchParams.get("productId");
+
+//     if (!userId || !productId) {
+//       return NextResponse.json(
+//         { error: "Missing userId or productId" },
+//         { status: 400 }
+//       );
+//     }
+
+//     // Fetch the user by `userId`
+//     const user = await sanityClient.fetch(
+//       `*[_type == "user" && userId == $userId][0]`,
+//       { userId }
+//     );
+
+//     if (!user) {
+//       return NextResponse.json({ error: "User not found" }, { status: 404 });
+//     }
+
+//     // Ensure wishlist is an array and check if the product exists
+//     const isWishlisted = Array.isArray(user.wishlist)
+//       ? user.wishlist.some((item: WishlistItem) => item._ref === productId)
+//       : false;
+
+//     return NextResponse.json({ isWishlisted });
+//   } catch (error) {
+//     console.error("Error checking wishlist:", error);
+//     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+//   }
+// }
+
 import { NextResponse } from "next/server";
 import sanityClient from "@/sanity/sanity.client";
 
-export async function GET(req: Request) {
+// Define the type for wishlist items
+interface WishlistItem {
+  _ref: string;
+  _key: string;
+}
+
+export async function POST(req: Request) {
+  console.log("toggleWishlist API Hit");
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId");
-    const productId = searchParams.get("productId");
+    const { userId, productId } = await req.json();
+    console.log("Received userId:", userId, "productId:", productId);
 
     if (!userId || !productId) {
       return NextResponse.json({ error: "Missing userId or productId" }, { status: 400 });
     }
 
-    // Fetch the user by `userId` instead of `_id`
+    // Fetch user by userId
     const user = await sanityClient.fetch(
       `*[_type == "user" && userId == $userId][0]`,
       { userId }
@@ -21,11 +70,36 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const isWishlisted = user.wishlist?.some((item: any) => item._ref === productId) || false;
+    // Fetch product _id from Sanity using productId
+    const product = await sanityClient.fetch(
+      `*[_type == "product" && productId == $productId][0]`,
+      { productId }
+    );
 
-    return NextResponse.json({ isWishlisted });
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    const productRef: WishlistItem = { _ref: product._id, _key: crypto.randomUUID() }; // Explicit typing
+
+    let updatedWishlist: WishlistItem[] = user.wishlist || [];
+
+    // Check if product is already in wishlist
+    const exists = updatedWishlist.some((item: WishlistItem) => item._ref === product._id);
+
+    if (exists) {
+      updatedWishlist = updatedWishlist.filter((item: WishlistItem) => item._ref !== product._id);
+    } else {
+      updatedWishlist.push(productRef);
+    }
+
+    // Update wishlist in Sanity
+    await sanityClient.patch(user._id).set({ wishlist: updatedWishlist }).commit();
+
+    return NextResponse.json({ isWishlisted: !exists });
   } catch (error) {
-    console.error("Error checking wishlist:", error);
+    console.error("Error toggling wishlist:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+

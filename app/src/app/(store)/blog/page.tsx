@@ -10,7 +10,6 @@ const Blog = () => {
   console.log(router)
   return (
     <div>
-      {/* <div>{`${router}`}</div> */}
       <BreadCrumbs/>
     </div>
   )
