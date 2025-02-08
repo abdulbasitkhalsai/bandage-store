@@ -156,7 +156,7 @@ interface GoogleProfile extends Profile {
 export const runtime = "nodejs";
 
 const handler = NextAuth({
-  debug: false,
+  debug: true,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
