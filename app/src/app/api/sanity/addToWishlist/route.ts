@@ -90,36 +90,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-
-// import SanityClient from "@/sanity/sanity.client";
-// import { NextApiRequest, NextApiResponse } from "next";
-
-
-// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-//   if (req.method !== "POST") {
-//     return res.status(405).json({ message: "Method Not Allowed" });
-//   }
-
-//   const { userId, productId } = req.body;
-
-//   if (!userId || !productId) {
-//     console.error("Missing userId or productId", { userId, productId });
-//     return res.status(400).json({ message: "Missing userId or productId" });
-//   }
-
-//   try {
-//     // Ensure the wishlist field exists and add a new product
-//     await SanityClient
-//       .patch(userId) // Target the user's document
-//       .setIfMissing({ wishlist: [] }) // Ensure the wishlist array exists
-//       .append("wishlist", [{ _type: "wishlistItem", productId }]) // Append new product
-//       .commit();
-
-//     console.log(`Product ${productId} added to wishlist for user ${userId}`);
-
-//     return res.status(200).json({ message: "Added to wishlist" });
-//   } catch (error) {
-//     console.error("Error adding to wishlist:", error);
-//     return res.status(500).json({ message: "Failed to add to wishlist" });
-//   }
-// }

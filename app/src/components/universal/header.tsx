@@ -8,10 +8,11 @@ import { ReactNode, useState } from "react";
 import Modals from "./modals";
 import { useSession, signOut } from "next-auth/react";
 import { UserCircleIcon } from "lucide-react";
+import WishlistArray from "../buttons/wishlistArray";
 
 
 const Header = ({ children }: { children?: ReactNode }) => {
-  const { data: session } = useSession(); // No 'loading' check - Navbar renders immediately
+  const { data: session, status } = useSession(); // No 'loading' check - Navbar renders immediately
   const [toggle, setToggle] = useState(false);
   const {setOpen, setModalType } = useLoginContext();
 
@@ -19,7 +20,7 @@ const Header = ({ children }: { children?: ReactNode }) => {
     setModalType(type);
     setOpen(true);
   };
-
+  if (status === "loading") return null;
   return (
     <header className="font-[sans-serif] min-h-[40px] tracking-wide z-50 shadow-md sticky top-0 w-full bg-[#FFFFFF]">
       <div>{children}</div>
@@ -41,9 +42,9 @@ const Header = ({ children }: { children?: ReactNode }) => {
                 </li>
               ))}
             </ul>
-
             {/* User Authentication */}
-            <div className="flex items-center max-sm:ml-auto ml-6">
+            <div className="flex items-center max-sm:ml-auto ml-6 gap-4">
+              <WishlistArray/>
               {session ? (
                 <div className="flex items-center gap-4">
                   {/* User Avatar */}
@@ -107,7 +108,10 @@ const Header = ({ children }: { children?: ReactNode }) => {
                 </li>
               ))}
             </ul>
-
+            <div>
+              Hello
+            {/* <WishlistArray/> */}
+            </div>
             {/* Mobile Authentication */}
             {!session && (
               <div className="flex flex-col items-center py-4 space-y-2">

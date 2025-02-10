@@ -16,19 +16,6 @@ export const UserContextProvider = ({ children }: { children: ReactNode }) => {
       setIsAuthenticated(true);
     }
   }, []);
-
-  // const handleLogin = (user: string) => {
-  //   SetUser(user);
-  //   setIsAuthenticated(true);
-  //   localStorage.setItem('user', user);
-  // };
-
-  // const handleLogout = () => {
-  //   SetUser(null);
-  //   setIsAuthenticated(false);
-  //   localStorage.removeItem('user');
-  // };
-
   return (
     <UserContext.Provider value={{ User, SetUser, isAuthenticated, setIsAuthenticated }}>
       {children}

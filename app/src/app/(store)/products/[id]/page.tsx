@@ -4,6 +4,7 @@ import { IProductProp } from '@/interfaces'
 import { GetProductData } from '@/sanity/sanity.query'
 import Image from 'next/image'
 import Link from 'next/link'
+import WishlistButton from '@/components/universal/wishlistButton'
 
 const SingleProd = async ({params} : {params : {id :string}}) => {  
   const prodData = await GetProductData();
@@ -45,8 +46,9 @@ const SingleProd = async ({params} : {params : {id :string}}) => {
             <span className='rounded-full w-[30px] h-[30px] bg-[#252B42]'></span>
           </div>
           <div className='flex gap-[10px] mt-10'>
-            <button className='bg-[#23A6F0] text-white py-[10px] px-[20px] rounded-[5px]'>Select Option</button>
-            <button  aria-label="Add to Favorite" className='w-10 h-10 flex items-center justify-center p-1 rounded-full bg-[#FFFFFF] border border-[#E8E8E8]'><Image  src={"/images/Icon-Favorite.png"} alt='Favorite' width={20} height={20}></Image></button>
+            <button className='bg-[#23A6F0] text-white py-[10px] px-[20px] rounded-[5px]'>Add to Cart</button>
+            <WishlistButton productId={product.productId}/>
+            {/* <button  aria-label="Add to Favorite" className='w-10 h-10 flex items-center justify-center p-1 rounded-full bg-[#FFFFFF] border border-[#E8E8E8]'><Image  src={"/images/Icon-Favorite.png"} alt='Favorite' width={20} height={20}></Image></button> */}
             <button  aria-label="Add to Cart" className='w-10 h-10 flex items-center justify-center p-1 rounded-full bg-[#FFFFFF] border border-[#E8E8E8]'><Image src={"/images/Icon-Cart.png"} alt='Cart' width={20} height={20}></Image></button>
             <button  aria-label="View Details"  className='w-10 h-10 flex items-center justify-center p-1 rounded-full bg-[#FFFFFF] border border-[#E8E8E8]'><Image src={"/images/Icon-view.png"} alt='Favorite' width={20} height={20}></Image></button>
           </div>

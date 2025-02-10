@@ -55,9 +55,6 @@ const Category = () => {
                         <p className="text-sm">{item.productCount} Items</p>
                      </div>
                 </div>
-            {/* <div className='relative'>
-                <span className='absolute top-1/2 right-1/2 z-10 text-red-950  bg-blue-950 flex'>hello</span>
-            </div> */}
             </Link></li>))}
         </ul>
       </div>
