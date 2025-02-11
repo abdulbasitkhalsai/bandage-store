@@ -13,26 +13,22 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Missing userId or productId" }, { status: 400 });
     }
 
-    // Fetch user by `userId` instead of `_id`
-    const user = await sanityClient.fetch(`*[_type == "user" && userId == $userId][0]`, { userId });
+    // Fetch user wishlist
+    const user = await sanityClient.fetch(
+      `*[_type == "user" && userId == $userId][0]`,
+      { userId }
+    );
 
     if (!user) {
-      return NextResponse.json({ isWishlisted: false });
+      return NextResponse.json({ isWishlisted: false, message: "User not found" }, { status: 200 });
     }
 
-    // Fetch product ID from Sanity
-    const product = await sanityClient.fetch(`*[_type == "product" && productId == $productId][0]`, { productId });
+    // Check if product exists in wishlist
+    const isWishlisted = user.wishlist?.some((item: { _ref: string }) => item._ref === productId);
 
-    if (!product) {
-      return NextResponse.json({ isWishlisted: false });
-    }
-
-    // Check if product is in the wishlist
-    const isWishlisted = user.wishlist?.some((item: { _ref: string }) => item._ref === product._id) || false;
-
-    return NextResponse.json({ isWishlisted });
+    return NextResponse.json({ isWishlisted }, { status: 200 });
   } catch (error) {
-    console.error("Error checking wishlist:", error);
+    console.error("Error checking wishlist status:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

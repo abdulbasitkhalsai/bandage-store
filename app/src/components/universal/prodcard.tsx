@@ -23,15 +23,15 @@ const ProdCard = ({ product }: ProdCardProps) => {
 
   return (
     <>
-      <li className="relative w-fit lg:w-[239px] h-auto group hover:scale-105 transition-transform ease-in-out duration-300">
+      <li className="relative w-fit lg:w-[300px] h-auto group hover:scale-105 transition-transform ease-in-out duration-300">
         <Link href={`/products/${product.slug.current}`} className="block">
           <div className='relative'>
 
             <Image
-              className="w-[348px] h-[300px]"
+              className="w-[300px] h-[300px]"
               src={product.imageUrl || '/images/ProdCard-1.png'}
               alt={product.title || 'Image'}
-              width={348}
+              width={300}
               height={427}
               />
           <button

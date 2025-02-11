@@ -8,10 +8,10 @@ interface WishlistItem {
 }
 
 export async function POST(req: Request) {
-  console.log("toggleWishlist API Hit");
+  // console.log("toggleWishlist API Hit");
   try {
     const { userId, productId } = await req.json();
-    console.log("Received userId:", userId, "productId:", productId);
+    // console.log("Received userId:", userId, "productId:", productId);
 
     if (!userId || !productId) {
       return NextResponse.json({ error: "Missing userId or productId" }, { status: 400 });
