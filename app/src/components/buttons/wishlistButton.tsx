@@ -87,13 +87,98 @@
 //     </button>
 //   );
 // }
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { useSession } from "next-auth/react";
+// import { HeartIcon } from "@heroicons/react/24/solid";
+// import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
+// import { useWishlist } from "@/context/wishlistContext";
+
+// interface WishlistButtonProps {
+//   productId: string;
+// }
+
+// export default function WishlistButton({ productId }: WishlistButtonProps) {
+//   const { data: session } = useSession();
+//   const { addToWishlist, removeFromWishlist } = useWishlist();
+//   const userId = session?.user?.id;
+//   const [isWishlisted, setIsWishlisted] = useState(false);
+//   const [loading, setLoading] = useState(false);
+
+//   // Check if product is in wishlist on mount
+//   useEffect(() => {
+//     if (!userId) return;
+    
+//     const fetchWishlistStatus = async () => {
+//       try {
+//         const res = await fetch(`/api/sanity/checkWishlist?userId=${userId}&productId=${productId}`);
+//         if (!res.ok) throw new Error("Failed to fetch wishlist status");
+
+//         const data = await res.json();
+//         setIsWishlisted(data.isWishlisted);
+//       } catch (error) {
+//         console.error("Error checking wishlist status:", error);
+//       }
+//     };
+
+//     fetchWishlistStatus();
+//   }, [userId, productId]);
+
+//   const handleWishlist = async (e: React.MouseEvent) => {
+//     e.preventDefault();
+//     e.stopPropagation();
+
+//     if (!userId || loading) return;
+
+//     setLoading(true);
+//     setIsWishlisted((prev) => !prev); // Optimistic update
+
+//     try {
+//       const res = await fetch("/api/sanity/toggleWishlist", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({ userId, productId }),
+//       });
+
+//       if (!res.ok) throw new Error("Wishlist update failed");
+
+//       if (isWishlisted) {
+//         removeFromWishlist(productId);
+//       } else {
+//         const productRes = await fetch(`/api/getProduct?productId=${productId}`);
+//         if (!productRes.ok) throw new Error("Failed to fetch product details");
+        
+//         const productData = await productRes.json();
+//         addToWishlist(productData);
+//       }
+//     } catch (error) {
+//       console.error(error);
+//       setIsWishlisted((prev) => !prev); // Revert on failure
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <button onClick={handleWishlist} disabled={loading} className="bg-white p-2 rounded-full shadow-md hover:bg-gray-200">
+//       {isWishlisted ? (
+//         <HeartIcon className="h-5 w-5 text-red-500 transition-all duration-200 ease-in-out" />
+//       ) : (
+//         <OutlineHeartIcon className="h-5 w-5 text-gray-600 transition-all duration-200 ease-in-out" />
+//       )}
+//     </button>
+//   );
+// }
+
 "use client";
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { useWishlist } from "@/context/wishlistContext";
+import { useWishlist } from "@/context/wishlistContextProvider";
+
 
 interface WishlistButtonProps {
   productId: string;
@@ -101,29 +186,15 @@ interface WishlistButtonProps {
 
 export default function WishlistButton({ productId }: WishlistButtonProps) {
   const { data: session } = useSession();
-  const { addToWishlist, removeFromWishlist } = useWishlist();
+  const { wishlist, addToWishlist, removeFromWishlist, updateWishlist } = useWishlist();
   const userId = session?.user?.id;
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Check if product is in wishlist on mount
+  // Check if product is already in wishlist
   useEffect(() => {
-    if (!userId) return;
-    
-    const fetchWishlistStatus = async () => {
-      try {
-        const res = await fetch(`/api/sanity/checkWishlist?userId=${userId}&productId=${productId}`);
-        if (!res.ok) throw new Error("Failed to fetch wishlist status");
-
-        const data = await res.json();
-        setIsWishlisted(data.isWishlisted);
-      } catch (error) {
-        console.error("Error checking wishlist status:", error);
-      }
-    };
-
-    fetchWishlistStatus();
-  }, [userId, productId]);
+    setIsWishlisted(wishlist.some((item) => item._id === productId));
+  }, [wishlist, productId]);
 
   const handleWishlist = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -132,26 +203,19 @@ export default function WishlistButton({ productId }: WishlistButtonProps) {
     if (!userId || loading) return;
 
     setLoading(true);
-    setIsWishlisted((prev) => !prev); // Optimistic update
+    setIsWishlisted((prev) => !prev); // Optimistic UI update
 
     try {
-      const res = await fetch("/api/sanity/toggleWishlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, productId }),
-      });
-
-      if (!res.ok) throw new Error("Wishlist update failed");
-
       if (isWishlisted) {
-        removeFromWishlist(productId);
+        await removeFromWishlist(productId);
       } else {
-        const productRes = await fetch(`/api/getProduct?productId=${productId}`);
-        if (!productRes.ok) throw new Error("Failed to fetch product details");
-        
-        const productData = await productRes.json();
-        addToWishlist(productData);
+        const res = await fetch(`/api/getProduct?productId=${productId}`);
+        if (!res.ok) throw new Error("Failed to fetch product details");
+
+        const productData = await res.json();
+        await addToWishlist(productData);
       }
+      await updateWishlist(); // Ensure count sync
     } catch (error) {
       console.error(error);
       setIsWishlisted((prev) => !prev); // Revert on failure
@@ -161,7 +225,7 @@ export default function WishlistButton({ productId }: WishlistButtonProps) {
   };
 
   return (
-    <button onClick={handleWishlist} disabled={loading} className="bg-white p-2 rounded-full shadow-md hover:bg-gray-200">
+    <button onClick={handleWishlist} disabled={loading} className="p-2 rounded-full shadow-md bg-white hover:bg-gray-200">
       {isWishlisted ? (
         <HeartIcon className="h-5 w-5 text-red-500 transition-all duration-200 ease-in-out" />
       ) : (

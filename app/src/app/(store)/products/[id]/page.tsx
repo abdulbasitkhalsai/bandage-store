@@ -4,7 +4,7 @@ import { IProductProp } from '@/interfaces'
 import { GetProductData } from '@/sanity/sanity.query'
 import Image from 'next/image'
 import Link from 'next/link'
-import WishlistButton from '@/components/universal/wishlistButton'
+import WishlistButton from '@/components/buttons/wishlistButton'
 
 const SingleProd = async ({params} : {params : {id :string}}) => {  
   const prodData = await GetProductData();

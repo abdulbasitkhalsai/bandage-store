@@ -99,81 +99,227 @@
 //     </WishlistContext.Provider>
 //   );
 // };
-'use client';
+// 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { WishlistContext } from './wishlistContext';
-import { useSession } from 'next-auth/react';
-import { IProductProp } from '@/interfaces';
-import { getUserWishlist, addToUserWishlist, removeFromUserWishlist, fetchProductsByIds } from '@/sanity/sanity.query';
-import { useLoginContext } from '@/context/loginContextProvider';
+// import React, { useState, useEffect } from 'react';
+// import { WishlistContext } from './wishlistContext';
+// import { useSession } from 'next-auth/react';
+// import { IProductProp } from '@/interfaces';
+// import { getUserWishlist, addToUserWishlist, removeFromUserWishlist, fetchProductsByIds } from '@/sanity/sanity.query';
+// import { useLoginContext } from '@/context/loginContextProvider';
+
+// export const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
+//   const { data: session } = useSession();
+//   const userId = session?.user?.id;
+//   const [wishlist, setWishlist] = useState<IProductProp[]>([]);
+//   const { setOpen, setModalType } = useLoginContext();
+
+//   useEffect(() => {
+//     const fetchWishlist = async () => {
+//       if (userId) {
+//         const productIds = await getUserWishlist(userId);
+//         if (productIds.length > 0) {
+//           const products = await fetchProductsByIds(productIds);
+//           setWishlist(products);
+//         } else {
+//           setWishlist([]); // Ensures state consistency
+//         }
+//       } else if (typeof window !== 'undefined') {
+//         const storedWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+//         setWishlist(storedWishlist);
+//       }
+//     };
+//     fetchWishlist();
+//   }, [userId]);
+
+//   useEffect(() => {
+//     if (typeof window !== 'undefined' && !userId) {
+//       localStorage.setItem('wishlist', JSON.stringify(wishlist));
+//     }
+//   }, [wishlist, userId]);
+
+//   const addToWishlist = async (product: IProductProp) => {
+//     if (!userId) {
+//       setOpen(true);
+//       setModalType('login');
+//       return;
+//     }
+
+//     if (!wishlist.some((item) => item._id === product._id)) {
+//       setWishlist([...wishlist, product]);
+
+//       try {
+//         await addToUserWishlist(userId, product._id);
+//         updateWishlist(); // ✅ Ensuring sync
+//       } catch (error) {
+//         console.error("Error adding to wishlist:", error);
+//       }
+//     }
+//   };
+
+//   const removeFromWishlist = async (productId: string) => {
+//     if (!userId) {
+//       setOpen(true);
+//       setModalType('login');
+//       return;
+//     }
+
+//     setWishlist(wishlist.filter((item) => item._id !== productId));
+//     await removeFromUserWishlist(userId, productId);
+//     updateWishlist(); // ✅ Ensuring sync
+//   };
+
+//   const updateWishlist = async () => {
+//     if (!userId) return;
+//     const productIds = await getUserWishlist(userId);
+//     const updatedProducts = await fetchProductsByIds(productIds);
+//     setWishlist(updatedProducts);
+//   };
+
+//   return (
+//     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, updateWishlist }}>
+//       {children}
+//     </WishlistContext.Provider>
+//   );
+// };
+
+// "use client";
+
+// import React, { useState, useEffect, createContext, useContext } from "react";
+// import { useSession } from "next-auth/react";
+// import { IProductProp } from "@/interfaces";
+// import { getUserWishlist, addToUserWishlist, removeFromUserWishlist, fetchProductsByIds } from "@/sanity/sanity.query";
+
+// interface WishlistContextType {
+//   wishlist: IProductProp[];
+//   addToWishlist: (product: IProductProp) => void;
+//   removeFromWishlist: (productId: string) => void;
+//   updateWishlist: () => void;
+// }
+
+// export const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
+
+// export const useWishlist = () => {
+//   const context = useContext(WishlistContext);
+//   if (!context) throw new Error("useWishlist must be used within a WishlistProvider");
+//   return context;
+// };
+
+// export const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
+//   const { data: session } = useSession();
+//   const userId = session?.user?.id;
+//   const [wishlist, setWishlist] = useState<IProductProp[]>([]);
+
+//   // Fetch wishlist from Sanity
+//   useEffect(() => {
+//     const fetchWishlist = async () => {
+//       if (!userId) {
+//         setWishlist([]); // Reset wishlist if user logs out
+//         return;
+//       }
+
+//       try {
+//         const productIds = await getUserWishlist(userId);
+//         if (productIds.length > 0) {
+//           const products = await fetchProductsByIds(productIds);
+//           setWishlist(products);
+//         } else {
+//           setWishlist([]);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching wishlist:", error);
+//       }
+//     };
+
+//     fetchWishlist();
+//   }, [userId]);
+
+//   // Add product to wishlist
+//   const addToWishlist = async (product: IProductProp) => {
+//     if (!userId) return;
+//     setWishlist((prev) => [...prev, product]); // Optimistic update
+//     await addToUserWishlist(userId, product._id);
+//   };
+
+//   // Remove product from wishlist
+//   const removeFromWishlist = async (productId: string) => {
+//     if (!userId) return;
+//     setWishlist((prev) => prev.filter((item) => item._id !== productId)); // Optimistic update
+//     await removeFromUserWishlist(userId, productId);
+//   };
+
+//   // Force refresh wishlist
+//   const updateWishlist = async () => {
+//     if (!userId) return;
+//     const productIds = await getUserWishlist(userId);
+//     const updatedProducts = await fetchProductsByIds(productIds);
+//     setWishlist(updatedProducts);
+//   };
+
+//   return (
+//     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, updateWishlist }}>
+//       {children}
+//     </WishlistContext.Provider>
+//   );
+// };
+
+'use client'
+import { createContext, useContext, useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { IProductProp } from "@/interfaces";
+import { getUserWishlist, addToUserWishlist, removeFromUserWishlist, fetchProductsByIds } from "@/sanity/sanity.query";
+
+
+export interface WishlistContextType {
+  wishlist: IProductProp[];
+  addToWishlist: (product: IProductProp) => void;
+  removeFromWishlist: (productId: string) => void;
+  updateWishlist: () => void;
+}
+
+export const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
+
+export const useWishlist = () => {
+  const context = useContext(WishlistContext);
+  if (!context) {
+    throw new Error("useWishlist must be used within a WishlistProvider");
+  }
+  return context;
+};
 
 export const WishlistProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session } = useSession();
-  const userId = session?.user?.id;
+  const userId = session?.user?.id?? "";
   const [wishlist, setWishlist] = useState<IProductProp[]>([]);
-  const { setOpen, setModalType } = useLoginContext();
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      if (userId) {
-        const productIds = await getUserWishlist(userId);
-        if (productIds.length > 0) {
-          const products = await fetchProductsByIds(productIds);
-          setWishlist(products);
-        } else {
-          setWishlist([]); // Ensures state consistency
-        }
-      } else if (typeof window !== 'undefined') {
-        const storedWishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        setWishlist(storedWishlist);
-      }
+      if (!userId) return; // Ensure we don't fetch data with an invalid userId
+      const productIds = await getUserWishlist(userId);
+      const products = productIds.length > 0 ? await fetchProductsByIds(productIds) : [];
+      setWishlist(products);
     };
+  
     fetchWishlist();
   }, [userId]);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && !userId) {
-      localStorage.setItem('wishlist', JSON.stringify(wishlist));
-    }
-  }, [wishlist, userId]);
+const addToWishlist = async (product: IProductProp) => {
+  if (!userId) return;
+  if (!wishlist.some((item) => item._id === product._id)) {
+    setWishlist([...wishlist, product]);
+    await addToUserWishlist(userId, product._id);
+  }
+};
 
-  const addToWishlist = async (product: IProductProp) => {
-    if (!userId) {
-      setOpen(true);
-      setModalType('login');
-      return;
-    }
+const removeFromWishlist = async (productId: string) => {
+  if (!userId) return;
+  setWishlist(wishlist.filter((item) => item._id !== productId));
+  await removeFromUserWishlist(userId, productId);
+};
 
-    if (!wishlist.some((item) => item._id === product._id)) {
-      setWishlist([...wishlist, product]);
-
-      try {
-        await addToUserWishlist(userId, product._id);
-        updateWishlist(); // ✅ Ensuring sync
-      } catch (error) {
-        console.error("Error adding to wishlist:", error);
-      }
-    }
-  };
-
-  const removeFromWishlist = async (productId: string) => {
-    if (!userId) {
-      setOpen(true);
-      setModalType('login');
-      return;
-    }
-
-    setWishlist(wishlist.filter((item) => item._id !== productId));
-    await removeFromUserWishlist(userId, productId);
-    updateWishlist(); // ✅ Ensuring sync
-  };
-
-  const updateWishlist = async () => {
-    if (!userId) return;
+const updateWishlist = async () => {
     const productIds = await getUserWishlist(userId);
-    const updatedProducts = await fetchProductsByIds(productIds);
-    setWishlist(updatedProducts);
+    setWishlist(await fetchProductsByIds(productIds));
   };
 
   return (

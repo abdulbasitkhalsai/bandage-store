@@ -121,57 +121,136 @@
 //     </Link>
 //   );
 // }
-"use client";
+// "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+// import { HeartIcon } from "@heroicons/react/24/outline";
+// import Link from "next/link";
+// import { useSession } from "next-auth/react";
+// import { useWishlist } from "@/context/wishlistContext";
+
+// export default function WishlistArray() {
+//   const { data: session, status } = useSession();
+//   const { wishlist } = useWishlist();
+//   const userId = session?.user?.id;
+//   const [wishlistCount, setWishlistCount] = useState<number>(0);
+
+//   // Fetch wishlist count once on login
+//   useEffect(() => {
+//     if (!userId || status !== "authenticated") return;
+
+//     const fetchWishlist = async () => {
+//       try {
+//         const res = await fetch(`/api/sanity/wishlistCount?userId=${userId}`);
+//         if (!res.ok) throw new Error("Failed to fetch wishlist count");
+
+//         const data = await res.json();
+//         setWishlistCount(data.count ?? 0); // Ensure 0 is set when no wishlist exists
+//       } catch (error) {
+//         console.error("Error fetching wishlist count:", error);
+//         setWishlistCount(0);
+//       }
+//     };
+
+//     fetchWishlist();
+//   }, [userId, status]);
+
+//   // Sync count with wishlist context changes
+//   useEffect(() => {
+//     setWishlistCount(wishlist.length);
+//   }, [wishlist]);
+
+//   if (status === "loading" || !session) return null;
+
+//   return (
+//     <Link href="/wishlist">
+//       <div className="relative flex items-center">
+//         <HeartIcon className="h-6 w-6 text-red-500 stroke-red-500 fill-white" />
+//         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+//           {wishlistCount}
+//         </span>
+//       </div>
+//     </Link>
+//   );
+// }
+// "use client";
+
+// import { useState, useEffect } from "react";
+// import { HeartIcon } from "@heroicons/react/24/outline";
+// import Link from "next/link";
+// import { useWishlist } from "@/context/wishlistContextProvider";
+// // import { useSession } from "next-auth/react";
+
+// export default function WishlistArray() {
+//   const { wishlist } = useWishlist();
+//   const wishlistCount = wishlist.length; // Always reflect the latest count
+
+//   return (
+//     <Link href="/wishlist">
+//       <div className="relative flex items-center">
+//         <HeartIcon className="h-6 w-6 text-red-500 stroke-red-500 fill-white" />
+//         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+//           {wishlistCount}
+//         </span>
+//       </div>
+//     </Link>
+//   );
+// }
+// import { useWishlist } from "@/context/wishlistContextProvider";
+// import { useWishlistSidebar } from "@/context/WishlistSidebarContext";
+// import { HeartIcon } from "@heroicons/react/24/outline";
+
+// export default function WishlistArray() {
+//   const { wishlist } = useWishlist();
+//   const { openSidebar } = useWishlistSidebar();
+
+//   console.log("🛠 WishlistArray rendered!");
+
+//   return (
+//     <button
+//       onClick={() => {
+//         console.log("🖱 Button clicked! Calling openSidebar...");
+//         openSidebar(); // Call function here
+//       }}
+//     >
+//       <div className="relative flex items-center">
+//         <HeartIcon className="h-6 w-6 text-red-500 stroke-red-500 fill-white" />
+//         <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+//           {wishlist.length}
+//         </span>
+//       </div>
+//     </button>
+//   );
+// }
+'use client'
+
+import { useEffect } from "react";
+import { useWishlist } from "@/context/wishlistContextProvider";
+import { useWishlistSidebar } from "@/context/WishlistSidebarContext";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useWishlist } from "@/context/wishlistContext";
 
 export default function WishlistArray() {
-  const { data: session, status } = useSession();
   const { wishlist } = useWishlist();
-  const userId = session?.user?.id;
-  const [wishlistCount, setWishlistCount] = useState<number>(0);
+  const { openSidebar } = useWishlistSidebar();
 
-  // Fetch wishlist count once on login
   useEffect(() => {
-    if (!userId || status !== "authenticated") return;
-
-    const fetchWishlist = async () => {
-      try {
-        const res = await fetch(`/api/sanity/wishlistCount?userId=${userId}`);
-        if (!res.ok) throw new Error("Failed to fetch wishlist count");
-
-        const data = await res.json();
-        setWishlistCount(data.count || 0);
-      } catch (error) {
-        console.error("Error fetching wishlist count:", error);
-        setWishlistCount(0);
-      }
-    };
-
-    fetchWishlist();
-  }, [userId, status]); // Run only when user logs in
-
-  // Sync count with wishlist context changes
-  useEffect(() => {
-    setWishlistCount(wishlist.length);
-  }, [wishlist]);
-
-  if (status === "loading" || !session) return null;
+    console.log("✅ WishlistArray component mounted!");
+  }, []);
 
   return (
-    <Link href="/wishlist">
+    <button
+    className="pointer-events-auto"
+      onClick={() => {
+        console.log("🖱 Button clicked! Calling openSidebar...");
+        openSidebar();
+      }}
+    >
       <div className="relative flex items-center">
         <HeartIcon className="h-6 w-6 text-red-500 stroke-red-500 fill-white" />
-        {wishlistCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-            {wishlistCount}
-          </span>
-        )}
+        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {wishlist.length}
+        </span>
       </div>
-    </Link>
+    </button>
   );
 }

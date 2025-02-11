@@ -8,7 +8,8 @@ import { ReactNode, useState } from "react";
 import Modals from "./modals";
 import { useSession, signOut } from "next-auth/react";
 import { UserCircleIcon } from "lucide-react";
-import WishlistArray from "../buttons/wishlistArray";
+import WishlistHeader from "../buttons/wishlistHeader";
+import CartHeader from "../buttons/cartHeader";
 
 
 const Header = ({ children }: { children?: ReactNode }) => {
@@ -44,7 +45,9 @@ const Header = ({ children }: { children?: ReactNode }) => {
             </ul>
             {/* User Authentication */}
             <div className="flex items-center max-sm:ml-auto ml-6 gap-4">
-              <WishlistArray/>
+              <WishlistHeader/>
+              <CartHeader userId="USER001"/>
+              {/* <WishlistArray/> */}
               {session ? (
                 <div className="flex items-center gap-4">
                   {/* User Avatar */}

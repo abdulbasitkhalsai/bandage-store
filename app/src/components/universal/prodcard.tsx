@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Eye } from 'lucide-react';
 import { useCart } from '@/context/cartContextProvider';
 import QuickViewModal from './quickviewModal';
-import WishlistButton from './wishlistButton';
+import WishlistButton from '../buttons/wishlistButton';
 
 interface ProdCardProps {
   product: IProductProp;
