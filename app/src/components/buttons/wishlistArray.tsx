@@ -226,12 +226,12 @@
 
 import { useEffect } from "react";
 import { useWishlist } from "@/context/wishlistContextProvider";
-import { useWishlistSidebar } from "@/context/WishlistSidebarContext";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { useSidebar } from "@/context/SidebarContextProvider";
 
 export default function WishlistArray() {
   const { wishlist } = useWishlist();
-  const { openSidebar } = useWishlistSidebar();
+  const { openSidebar } = useSidebar();
 
   useEffect(() => {
     console.log("✅ WishlistArray component mounted!");

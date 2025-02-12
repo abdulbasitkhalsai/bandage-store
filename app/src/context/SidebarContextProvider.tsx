@@ -1,16 +1,16 @@
 "use client";
 import { createContext, useContext, useState } from "react";
 
-interface WishlistSidebarContextType {
+interface SidebarContextType {
   isSidebarOpen: boolean;
   openSidebar: () => void;
   closeSidebar: () => void;
 }
 
-const WishlistSidebarContext = createContext<WishlistSidebarContextType | undefined>(undefined);
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-export const useWishlistSidebar = () => {
-  const context = useContext(WishlistSidebarContext);
+export const useSidebar = () => {
+  const context = useContext(SidebarContext);
   console.log("📢 useWishlistSidebar called, context:", context);
   if (!context) {
     throw new Error("useWishlistSidebar must be used within a WishlistSidebarProvider");
@@ -18,13 +18,13 @@ export const useWishlistSidebar = () => {
   return context;
 };
 
-export const WishlistSidebarProvider = ({ children }: { children: React.ReactNode }) => {
+export const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   console.log("WishlistSidebarProvider rendered, isSidebarOpen:", isSidebarOpen);
 
   return (
-    <WishlistSidebarContext.Provider
+    <SidebarContext.Provider
       value={{
         isSidebarOpen,
         openSidebar: () => {
@@ -38,6 +38,6 @@ export const WishlistSidebarProvider = ({ children }: { children: React.ReactNod
       }}
     >
       {children}
-    </WishlistSidebarContext.Provider>
+    </SidebarContext.Provider>
   );
 };

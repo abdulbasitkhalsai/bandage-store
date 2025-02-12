@@ -7,4 +7,26 @@
 .wrapper{
   @apply max-w-[1200px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto
   }
+
+.cta-button{
+  @apply  px-4 py-2 rounded-md bg-[#FF7A00] hover:bg-[#E66A00] text-sm font-medium text-white transition
+  }
+
 }  
+
+/* 
+# Primary Button (Vibrant Orange - Best for CTAs)
+
+# Hex: #FF7A00
+# RGB: 255, 122, 0
+# Tailwind Class: bg-[#FF7A00]
+# Hover Effect (Deeper Orange for Interaction)
+
+# Hex: #E66A00
+# RGB: 230, 106, 0
+# Tailwind Class: hover:bg-[#E66A00]
+# Secondary Button (Muted Orange for Subtle Actions)
+
+# Hex: #FFA34D
+# RGB: 255, 163, 77
+# Tailwind Class: bg-[#FFA34D] */

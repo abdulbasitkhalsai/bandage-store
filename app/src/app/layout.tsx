@@ -5,9 +5,6 @@ import { UserContextProvider } from "@/context/userContextProvider";
 import { LoginContextProvider } from "@/context/loginContextProvider";
 import SessionWrapper from "@/components/SessionWrapper";
 import { WishlistProvider } from "@/context/wishlistContextProvider";
-
-import { WishlistSidebarProvider } from "@/context/WishlistSidebarContext";
-import WishlistSidebar from "@/components/wishlistSideBar";
 import { SidebarProvider } from "@/context/sidebarContext";
 import Sidebar from "@/components/universal/sidebar";
 
@@ -30,15 +27,14 @@ export default function RootLayout({
         <SidebarProvider>
         <LoginContextProvider>
         <UserContextProvider>
-        <WishlistSidebarProvider>
+        <SidebarProvider>
         <WishlistProvider>
         <CartProvider>
-        <WishlistSidebar/>
         <Sidebar userId="USER0001"/>
         {children}
         </CartProvider>
         </WishlistProvider>
-        </WishlistSidebarProvider>
+        </SidebarProvider>
         </UserContextProvider>
         </LoginContextProvider>
         </SidebarProvider>

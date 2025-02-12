@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import SanityClient from "@/sanity/sanity.client";
 import { NextResponse } from "next/server";
 

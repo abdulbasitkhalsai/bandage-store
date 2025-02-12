@@ -1,14 +1,14 @@
 "use client";
+import { useSidebar } from "@/context/SidebarContextProvider";
 import { useWishlist } from "@/context/wishlistContextProvider";
-import { useWishlistSidebar } from "@/context/WishlistSidebarContext";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 
-export default function WishlistSidebar() {
+export default function Sidebar() {
   const { wishlist } = useWishlist();
-  const { isSidebarOpen, closeSidebar } = useWishlistSidebar();
+  const { isSidebarOpen, closeSidebar } = useSidebar();
 
   // Handle escape key to close sidebar
   useEffect(() => {
