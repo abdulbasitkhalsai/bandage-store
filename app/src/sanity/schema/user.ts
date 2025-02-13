@@ -52,6 +52,45 @@ export const userSchema = defineType({
       of: [{ type: "reference", to: [{ type: "product" }] }], // Correctly referencing products
     }),
     defineField({
+      name: "cart",
+      type: "array",
+      title: "Cart",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "product",
+              type: "reference",
+              to: [{ type: "product" }],
+              title: "Product",
+            }),
+            defineField({
+              name: "quantity",
+              type: "number",
+              title: "Quantity",
+              validation: (Rule) => Rule.min(1),
+            }),
+          ],
+          preview: {
+            select: {
+              title: "product.title", // Ensure the product schema has a 'title' field
+              media: "product.image.asset->url",
+              subtitle: "quantity",
+            },
+            prepare({ title, media, subtitle }) {
+              return {
+                title: title || "Unknown Product",
+                media: media || undefined,
+                subtitle: `Quantity: ${subtitle}`,
+              };
+            },
+          },
+        },
+      ],
+    }),
+        
+    defineField({
       name: "role",
       title: "Role",
       type: "string",

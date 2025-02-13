@@ -1,60 +1,90 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode} from "react";
+import { useState, useEffect } from "react";
+import { CartContext } from "./cartContext";
 
 interface CartItem {
-  productId: string;
+  _id: string;
   title: string;
   price: number;
-  imageUrl?: string;
+  imageUrl: string;
+  slug: string;
   quantity: number;
 }
 
-interface CartContextProps {
-  cart: CartItem[];
-  addToCart: (product: CartItem) => void;
-  removeFromCart: (productId: string) => void;
-  clearCart: () => void;
-  syncCart: () => void;
+
+interface CartProviderProps {
+  userId: string;
+  children: React.ReactNode;
 }
 
-const CartContext = createContext<CartContextProps | undefined>(undefined);
+export const CartProvider = ({ userId, children }: CartProviderProps) => {
+  const [cart, setCart] = useState<CartItem[]>([]); // ✅ Define type for cart
 
-export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  useEffect(() => {
+    if (!userId) return;
+    fetch(`/api/cart?userId=${userId}`)
+      .then((res) => res.json())
+      .then((data: CartItem[]) => setCart(data || []))
+      .catch(console.error);
+  }, [userId]);
 
-  const addToCart = (product: CartItem) => {
-    const updatedCart = [...cart, product];
+  const addToCart = async (item: CartItem) => {
+    const updatedCart = [...cart, item];
     setCart(updatedCart);
-    // Sync with backend or perform other actions
+
+    await fetch(`/api/cart?userId=${userId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: item._id, // Ensure this matches the schema in Sanity
+        title: item.title,
+        price: item.price,
+        imageUrl: item.imageUrl,
+        slug: item.slug,
+        quantity: item.quantity,
+      }),
+    });
+    ;
   };
 
-  const removeFromCart = (productId: string) => {
-    const updatedCart = cart.filter((item) => item.productId !== productId);
+  const removeFromCart = async (itemId: string) => {
+    const updatedCart = cart.filter((item) => item._id !== itemId);
     setCart(updatedCart);
-    // Sync with backend or perform other actions
+
+    await fetch(`/api/cart?userId=${userId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productIds: cart.map((item) => item._id) }),
+    });    
   };
 
-  const clearCart = () => {
+  const updateQuantity = async (itemId: string, quantity: number) => {
+    const updatedCart = cart.map((item) =>
+      item._id === itemId ? { ...item, quantity } : item
+    );
+    setCart(updatedCart);
+
+    await fetch(`/api/cart?userId=${userId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: itemId, quantity }),
+    });
+  };
+
+  const clearCart = async () => {
     setCart([]);
-    // Sync with backend or perform other actions
-  };
 
-  const syncCart = () => {
-    // Sync with the backend (optional)
+    await fetch(`/api/cart?userId=${userId}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clear: true }),
+    });
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, syncCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );
-};
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
-  return context;
 };

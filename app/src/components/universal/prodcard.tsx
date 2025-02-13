@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { Eye } from 'lucide-react';
-import { useCart } from '@/context/cartContextProvider';
 import QuickViewModal from './quickviewModal';
 import WishlistButton from '../buttons/wishlistButton';
+import { useCart } from '@/context/cartContext';
 
 interface ProdCardProps {
   product: IProductProp;
@@ -39,11 +39,12 @@ const ProdCard = ({ product }: ProdCardProps) => {
               e.preventDefault();
               e.stopPropagation();
               addToCart({
-                productId: product.productId,
+                _id: product.productId, // 🔥 Change `productId` to `_id`
                 title: product.title,
                 price: product.price,
                 imageUrl: product.imageUrl,
-                quantity: 1,                                                                                            
+                slug: product.slug.current, // Ensure slug format is correct
+                quantity: 1,
               });
             }}
             className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-[#23856D] w-full text-white text-sm font-bold px-4 py-2 rounded-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"

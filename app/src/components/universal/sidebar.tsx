@@ -6,12 +6,25 @@ import { useSidebar } from "@/context/sidebarContext";
 import Link from "next/link";
 import Image from "next/image";
 
+type APIResponseItem = {
+  _id: string;
+  productid: string;
+  title: string;
+  price: number;
+  imageUrl?: string;
+  slug?: string;
+  product?: { _id: string; title: string; price: number; imageUrl?: string; slug?: { current: string } };
+  quantity?: number;
+};
+
+
 interface SidebarItem {
   _id: string;
   title: string;
   price: number;
   imageUrl: string;
   slug: string;
+  quantity?: number; // Add quantity for cart items
 }
 
 export default function Sidebar({ userId }: { userId: string }) {
@@ -22,17 +35,69 @@ export default function Sidebar({ userId }: { userId: string }) {
   const [showCursor, setShowCursor] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
+  const updateCartQuantity = async (productId: string, newQuantity: number) => {
+    if (newQuantity < 1) return;
+  
+    const updatedItems = items.map((item) =>
+      item._id === productId ? { ...item, quantity: newQuantity } : item
+    );
+  
+    try {
+      const response = await fetch("/api/updateCart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, productId, quantity: newQuantity }),
+      });
+  
+      if (!response.ok) throw new Error("Failed to update cart");
+  
+      setItems(updatedItems); // Update state only if API succeeds
+    } catch (error) {
+      console.error("Error updating cart:", error);
+    }
+  };
+  
+
+
   useEffect(() => {
     if (!activeType || !userId) return;
-
+  
     setLoading(true);
     fetch(`/api/${activeType}Array?userId=${userId}`)
       .then((res) => res.json())
-      .then((data) => setItems(data || []))
+      .then((data : APIResponseItem[]) => {
+        console.log("API Response:", data);
+  
+        const formattedItems = data.map((item: APIResponseItem) => {
+          if (activeType === "cart" && item.product) {
+            // Cart items contain product object & quantity
+            return {
+              _id: item.product._id,
+              title: item.product.title,
+              price: item.product.price,
+              imageUrl: item.product.imageUrl || "/placeholder.jpg",
+              slug: item.product.slug?.current || item.product._id,
+              quantity: item.quantity, // Cart has quantity
+            };
+          } else if (activeType === "wishlist") {
+            // Wishlist returns an array of products (no wrapping product object)
+            return {
+              _id: item._id,
+              title: item.title,
+              price: item.price,
+              imageUrl: item.imageUrl || "/placeholder.jpg",
+              slug: `/products/${item._id}`,
+            };
+          }
+        });
+  
+        setItems(formattedItems.filter((item): item is SidebarItem => item !== undefined));
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [activeType, userId]);
-
+  
+      
   useEffect(() => {
     const handleScroll = (event: WheelEvent) => {
       if (sidebarRef.current && isOpen) {
@@ -134,7 +199,19 @@ export default function Sidebar({ userId }: { userId: string }) {
                   <div className="flex flex-col flex-1 py-1">
                     <p className="text-sm font-medium tracking-wider">{item.title}</p>
                     <div className="flex items-center justify-between mt-auto">
-                      <p className="text-xs text-gray-500">{item.price} PKR</p>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        className="bg-gray-200 px-2 rounded text-lg" 
+                        onClick={() => updateCartQuantity(item._id, item.quantity! - 1)}
+                        disabled={item.quantity === 1} // Prevent going below 1
+                      >-</button>
+                      <p className="text-xs font-medium">{item.quantity}</p>
+                      <button 
+                        className="bg-gray-200 px-2 rounded text-lg" 
+                        onClick={() => updateCartQuantity(item._id, item.quantity! + 1)}
+                      >+</button>
+                    </div>
+
                       <button
                         className="cta-button"
                         onClick={() => console.log(`Added ${item.title} to cart`)}

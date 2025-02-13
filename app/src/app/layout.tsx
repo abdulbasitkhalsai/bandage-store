@@ -29,7 +29,7 @@ export default function RootLayout({
         <UserContextProvider>
         <SidebarProvider>
         <WishlistProvider>
-        <CartProvider>
+        <CartProvider userId="USER0001">
         <Sidebar userId="USER0001"/>
         {children}
         </CartProvider>
